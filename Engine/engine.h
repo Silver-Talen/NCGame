@@ -1,6 +1,6 @@
 #pragma once
 
-#include <iostream>
+#include "sdl.h"
 
 #ifdef ENGINE_EXPORTS  
 #define ENGINE_API __declspec(dllexport)   
@@ -13,9 +13,4 @@ class ENGINE_API Engine
 public:
 	Engine() {}
 	~Engine() {}
-
-	void Display()
-	{
-		std::cout << "Hello World !" << std::endl;
-	}
 };
