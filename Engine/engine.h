@@ -29,6 +29,4 @@ protected:
 	SDL_Window * m_window = nullptr;
 	SDL_Renderer* m_renderer = nullptr;
 	SDL_Texture* m_texture = nullptr;
-
-	TextureManager* m_textureManager = nullptr;
 };

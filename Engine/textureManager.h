@@ -1,17 +1,20 @@
 #pragma once
+#include "singleton.h"
 #include "engine.h"
 #include <map>
 
-class TextureManager
+class TextureManager : public Singleton<TextureManager>
 {
 public:
-	TextureManager() {}
-	~TextureManager() {}
 
 	bool Initialize(Engine* engine);
 	void Shutdown();
 
 	SDL_Texture* GetTexture(const std::string& textureName);
+
+protected:
+	TextureManager() {}
+	~TextureManager() {}
 
 private:
 	Engine * m_engine;
