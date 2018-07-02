@@ -10,6 +10,8 @@ public:
 	bool Initialize(Engine* engine);
 	void Shutdown();
 
+	friend Singleton<TextureManager>;
+
 	SDL_Texture* GetTexture(const std::string& textureName);
 
 protected:

@@ -1,28 +1,32 @@
 #include "engine.h"
 #include "textureManager.h"
+#include "renderer.h"
+#include "audioSystem.h"
+#include "inputManager.h"
 #include <cassert>
 
-//InputManager
-//Renderer
-//AudioSystem
-//with Initialize and Shutdown
+Vector2D position(0.0f, 0.0f);
 
 bool Engine::Initialize()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	m_window = SDL_CreateWindow("Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
-	m_renderer = SDL_CreateRenderer(m_window, -1, 0);
 
+	Renderer::Instance()->Initialize(this);
 	TextureManager::Instance()->Initialize(this);
+	InputManager::Instance()->Initialize(this);
+	AudioSystem::Instance()->Initialize(this);
 
 	return true;
 }
 
 void Engine::Shutdown()
 {
+	Renderer::Instance()->Shutdown();
 	TextureManager::Instance()->Shutdown();
+	InputManager::Instance()->Shutdown();
+	AudioSystem::Instance()->Shutdown();
 
-	SDL_DestroyRenderer(m_renderer);
 	SDL_DestroyWindow(m_window);
 	SDL_Quit();
 }
@@ -47,19 +51,19 @@ void Engine::Update()
 	int x, y;
 	SDL_GetMouseState(&x, &y);
 
-	SDL_SetRenderDrawColor(m_renderer, 50, 50, 255, 255);
-	SDL_RenderClear(m_renderer);
+	const Uint8* keystate = SDL_GetKeyboardState(nullptr);
+	if (keystate[SDL_SCANCODE_LEFT]) position.x -= 0.25f;
+	if (keystate[SDL_SCANCODE_RIGHT]) position.x += 0.25f;
+	if (keystate[SDL_SCANCODE_UP]) position.y -= 0.25f;
+	if (keystate[SDL_SCANCODE_DOWN]) position.y += 0.25f;
 
-	SDL_Rect rect = { x, y, 64, 64 };
-	SDL_Texture* texture = TextureManager::Instance()->GetTexture("..\\content\\crate.bmp");
+	Renderer::Instance()->BeginFrome();
 
-	SDL_QueryTexture(texture, nullptr, nullptr, &rect.w, &rect.h);
-	SDL_SetRenderDrawColor(m_renderer, 50, 50, 50, 255);
-	//SDL_RenderFillRect(m_renderer, &rect);
-	//SDL_RenderCopy(m_renderer, m_texture, nullptr, &rect);
-	SDL_RenderCopyEx(m_renderer, texture, nullptr, &rect, 45.0, nullptr, SDL_FLIP_NONE);
-	
+	Renderer::Instance()->SetColor(Color::blue);
+	//DRAW
+	SDL_Texture* texture = TextureManager::Instance()->GetTexture("..\\content\\link.bmp");
 
-	SDL_RenderPresent(m_renderer);
+	Renderer::Instance()->DrawTexture(texture, position, 0.0f);
 
+	Renderer::Instance()->EndFrame();
 }

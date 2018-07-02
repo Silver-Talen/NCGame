@@ -2,12 +2,14 @@
 #include "singleton.h"
 #include "engine.h"
 
-class InputManager
+class InputManager : public Singleton<InputManager>
 {
 public:
 
 	bool Initialize(Engine* engine);
 	void Shutdown();
+
+	friend Singleton<InputManager>;
 
 protected:
 	InputManager() {}

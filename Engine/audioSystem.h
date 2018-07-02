@@ -9,7 +9,7 @@ public:
 	bool Initialize(Engine* engine);
 	void Shutdown();
 
-protected:
+public:
 	AudioSystem() {}
 	~AudioSystem() {}
 

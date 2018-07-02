@@ -7,11 +7,11 @@ class Singleton
 public:
 	static T* Instance()
 	{
-		if (m_instance == nullptr)
+		if (!m_instance)
 		{
 			m_instance = new T;
 		}
-		return T;
+		return m_instance;
 	}
 
 	static void Destroy()
