@@ -36,3 +36,14 @@ void Renderer::DrawTexture(SDL_Texture * texture, const Vector2D & position, flo
 	SDL_QueryTexture(texture, nullptr, nullptr, &dest.w, &dest.h);
 	SDL_RenderCopyEx(m_renderer, texture, nullptr, &dest, angle, nullptr, SDL_FLIP_NONE);
 }
+
+void Renderer::DrawTexture(SDL_Texture * texture, const Vector2D & position, const Vector2D & scale, float angle)
+{
+	SDL_Point point = position;
+	SDL_Rect dest = { point.x, point.y, 0, 0 };
+	//SDL_Rect dest = { (point.x * scale.x), (point.y * scale.y), 0, 0 };
+	SDL_QueryTexture(texture, nullptr, nullptr, &dest.w, &dest.h);
+	dest.w *= scale.x;
+	dest.h *= scale.y;
+	SDL_RenderCopyEx(m_renderer, texture, nullptr, &dest, angle, nullptr, SDL_FLIP_NONE);
+}

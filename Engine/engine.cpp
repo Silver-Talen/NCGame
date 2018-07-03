@@ -3,15 +3,20 @@
 #include "renderer.h"
 #include "audioSystem.h"
 #include "inputManager.h"
+#include "timer.h"
+#include "matrix22.h"
 #include <cassert>
 
-Vector2D position(0.0f, 0.0f);
+Vector2D position(400.0f, 300.0f);
+//Vector2D scalar(5.0f, 5.0f);
+float angle = 0.0f;
 
 bool Engine::Initialize()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	m_window = SDL_CreateWindow("Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
 
+	Timer::Instance()->Initialize(this);
 	Renderer::Instance()->Initialize(this);
 	TextureManager::Instance()->Initialize(this);
 	InputManager::Instance()->Initialize(this);
@@ -22,6 +27,7 @@ bool Engine::Initialize()
 
 void Engine::Shutdown()
 {
+	Timer::Instance()->Shutdown();
 	Renderer::Instance()->Shutdown();
 	TextureManager::Instance()->Shutdown();
 	InputManager::Instance()->Shutdown();
@@ -33,6 +39,9 @@ void Engine::Shutdown()
 
 void Engine::Update()
 {
+	Timer::Instance()->Update();
+	//Timer::Instance()->SetTimeScale(5.0f);
+
 	SDL_Event event;
 	SDL_PollEvent(&event);
 
@@ -51,19 +60,29 @@ void Engine::Update()
 	int x, y;
 	SDL_GetMouseState(&x, &y);
 
+
 	const Uint8* keystate = SDL_GetKeyboardState(nullptr);
-	if (keystate[SDL_SCANCODE_LEFT]) position.x -= 0.25f;
-	if (keystate[SDL_SCANCODE_RIGHT]) position.x += 0.25f;
-	if (keystate[SDL_SCANCODE_UP]) position.y -= 0.25f;
-	if (keystate[SDL_SCANCODE_DOWN]) position.y += 0.25f;
+	if (keystate[SDL_SCANCODE_RETURN]) (Timer::Instance()->IsPaused()) ? Timer::Instance()->Unpause() : Timer::Instance()->Pause(); 
+
+	if (keystate[SDL_SCANCODE_LEFT]) angle  -= 180.0f * Timer::Instance()->DeltaTime();
+	if (keystate[SDL_SCANCODE_RIGHT]) angle += 180.0f * Timer::Instance()->DeltaTime();
+
+	Vector2D force = Vector2D::zero;
+	if (keystate[SDL_SCANCODE_UP]) force.y  = -300.0f * Timer::Instance()->DeltaTime();
+	if (keystate[SDL_SCANCODE_DOWN]) force.y = 300.0f * Timer::Instance()->DeltaTime();
+
+	Matrix22 mx;
+	mx.Rotate(angle * Math::DegreesToRadians);
+	force = force * mx;
+	position += force;
 
 	Renderer::Instance()->BeginFrome();
-
-	Renderer::Instance()->SetColor(Color::blue);
+	Renderer::Instance()->SetColor(Color::black);
 	//DRAW
-	SDL_Texture* texture = TextureManager::Instance()->GetTexture("..\\content\\link.bmp");
+	SDL_Texture* texture = TextureManager::Instance()->GetTexture("..\\content\\car.bmp");
 
-	Renderer::Instance()->DrawTexture(texture, position, 0.0f);
+	Renderer::Instance()->DrawTexture(texture, position, angle);
+	//Renderer::Instance()->DrawTexture(texture, position, scalar, 0.0f);
 
 	Renderer::Instance()->EndFrame();
 }
