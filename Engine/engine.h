@@ -7,6 +7,7 @@
 #endif 
 
 #include "sdl.h"
+#include <SDL_ttf.h>
 
 class TextureManager;
 
