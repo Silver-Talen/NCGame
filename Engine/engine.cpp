@@ -18,14 +18,20 @@ Text* text;
 bool Engine::Initialize()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
-	TTF_Init();
 	m_window = SDL_CreateWindow("Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
 
 	Timer::Instance()->Initialize(this);
 	Renderer::Instance()->Initialize(this);
 	TextureManager::Instance()->Initialize(this);
+	TextManager::Instance()->Initialize(this);
 	InputManager::Instance()->Initialize(this);
 	AudioSystem::Instance()->Initialize(this);
+
+	InputManager::Instance()->AddAction("fire", SDL_BUTTON_LEFT, InputManager::eDevice::MOUSE);
+	InputManager::Instance()->AddAction("steer", InputManager::eAxis::X, InputManager::eDevice::MOUSE);
+
+	InputManager::Instance()->AddAction("left", SDL_SCANCODE_LEFT, InputManager::eDevice::KEYBOARD);
+	InputManager::Instance()->AddAction("right", SDL_SCANCODE_RIGHT, InputManager::eDevice::KEYBOARD);
 	
 	text = TextManager::Instance()->CreateText("Hello!", "..\\content\\Inconsolata-Bold.ttf", 24, Color::red);
 	
@@ -37,11 +43,11 @@ void Engine::Shutdown()
 	Timer::Instance()->Shutdown();
 	Renderer::Instance()->Shutdown();
 	TextureManager::Instance()->Shutdown();
+	TextManager::Instance()->Shutdown();
 	InputManager::Instance()->Shutdown();
 	AudioSystem::Instance()->Shutdown();
 
 	SDL_DestroyWindow(m_window);
-	TTF_Quit();
 	SDL_Quit();
 }
 
@@ -71,32 +77,43 @@ void Engine::Update()
 
 	const Uint8* keystate = SDL_GetKeyboardState(nullptr);
 
-	if (InputManager::Instance()->GetButtonAction(SDL_SCANCODE_RETURN) == InputManager::eAction::PRESSED)
+	//Test
+	if (InputManager::Instance()->GetActionButton("fire") == InputManager::eButtonState::PRESSED)
+	{
+		std::cout << "button\n";
+	}
+
+	//Pause
+	if (InputManager::Instance()->GetButtonState(SDL_SCANCODE_RETURN) == InputManager::eButtonState::PRESSED)
 	{
 		(Timer::Instance()->IsPaused()) ? Timer::Instance()->Unpause() : Timer::Instance()->Pause(); 
 	}
 
-	if (InputManager::Instance()->GetButtonAction(SDL_SCANCODE_LEFT) == InputManager::eAction::PRESSED || 
-		InputManager::Instance()->GetButtonAction(SDL_SCANCODE_LEFT) == InputManager::eAction::HELD)
+	//Movement
+	/*if (InputManager::Instance()->GetActionButton("left") == InputManager::eButtonState::PRESSED ||
+		InputManager::Instance()->GetActionButton("left") == InputManager::eButtonState::HELD)
 	{
 		angle -= 180.0f * Timer::Instance()->DeltaTime();
 	}
 
-	if (InputManager::Instance()->GetButtonAction(SDL_SCANCODE_RIGHT) == InputManager::eAction::PRESSED ||
-		InputManager::Instance()->GetButtonAction(SDL_SCANCODE_RIGHT) == InputManager::eAction::HELD)
+	if (InputManager::Instance()->GetActionButton("right") == InputManager::eButtonState::PRESSED ||
+		InputManager::Instance()->GetActionButton("right") == InputManager::eButtonState::HELD)
 	{
 		angle += 180.0f * Timer::Instance()->DeltaTime();
-	}
+	}*/
+
+	float steer = InputManager::Instance()->GetActionRelative("steer");
+	angle += (steer * 200.0f) * Timer::Instance()->DeltaTime();
 
 	Vector2D force = Vector2D::zero;
-	if (InputManager::Instance()->GetButtonAction(SDL_SCANCODE_UP) == InputManager::eAction::PRESSED ||
-		InputManager::Instance()->GetButtonAction(SDL_SCANCODE_UP) == InputManager::eAction::HELD)
+	if (InputManager::Instance()->GetButtonState(SDL_SCANCODE_UP) == InputManager::eButtonState::PRESSED ||
+		InputManager::Instance()->GetButtonState(SDL_SCANCODE_UP) == InputManager::eButtonState::HELD)
 	{
 		force.y = -300.0f * Timer::Instance()->DeltaTime();
 	}
 
-	if (InputManager::Instance()->GetButtonAction(SDL_SCANCODE_DOWN) == InputManager::eAction::PRESSED ||
-		InputManager::Instance()->GetButtonAction(SDL_SCANCODE_DOWN) == InputManager::eAction::HELD)
+	if (InputManager::Instance()->GetButtonState(SDL_SCANCODE_DOWN) == InputManager::eButtonState::PRESSED ||
+		InputManager::Instance()->GetButtonState(SDL_SCANCODE_DOWN) == InputManager::eButtonState::HELD)
 	{
 		force.y = 300.0f * Timer::Instance()->DeltaTime();
 	}
@@ -106,14 +123,19 @@ void Engine::Update()
 	force = force * mx;
 	position += force;
 
+	//DRAW
 	Renderer::Instance()->BeginFrome();
 	Renderer::Instance()->SetColor(Color::black);
 
+	float xy = InputManager::Instance()->GetActionRelative("steer");
+	std::string str = std::to_string(x);
+
+
 	std::vector<Color> colors = { Color::red, Color::green, Color::white };
-	text->SetText("Hello World", colors[rand() % colors.size()]);
+	//text->SetText("Hello World", colors[rand() % colors.size()]);
+	text->SetText(str, colors[rand() % colors.size()]);
 	text->Draw(Vector2D(10.0f, 10.0f), 0.0f);
 
-	//DRAW
 	SDL_Texture* texture = TextureManager::Instance()->GetTexture("..\\content\\car.bmp");
 	Renderer::Instance()->DrawTexture(texture, position, angle);
 	//Renderer::Instance()->DrawTexture(texture, position, scalar, 0.0f);
