@@ -88,7 +88,7 @@ InputManager::eButtonState InputManager::GetActionButton(const std::string & act
 	eButtonState state = eButtonState::IDLE;
 
 	auto iter = m_actions.find(action);
-	if (iter == m_actions.end())
+	if (iter != m_actions.end())
 	{
 		InputInfo inputInfo = iter->second;
 		state = GetButtonState(inputInfo.id, inputInfo.device, inputInfo.index);

@@ -11,9 +11,10 @@ public:
 
 	bool Initialize(Engine* engine);
 	void Shutdown();
+	void Update();
 
 	void AddSound(const std::string& id, const std::string& filename); 
-	void PlaySound(const std::string& id); 
+	void PlaySound(const std::string& id, bool loop); 
 	void RemoveSound(const std::string& id);
 
 public:

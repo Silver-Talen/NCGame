@@ -27,11 +27,20 @@ bool Engine::Initialize()
 	InputManager::Instance()->Initialize(this);
 	AudioSystem::Instance()->Initialize(this);
 
+	//Sounds
+	AudioSystem::Instance()->AddSound("horn", "..\\content\\horn.wav");
+	AudioSystem::Instance()->AddSound("laser", "..\\content\\laser.wav");
+
+	//Mouse Actions
 	InputManager::Instance()->AddAction("fire", SDL_BUTTON_LEFT, InputManager::eDevice::MOUSE);
 	InputManager::Instance()->AddAction("steer", InputManager::eAxis::X, InputManager::eDevice::MOUSE);
 
+	//Keyboard Actions
+	InputManager::Instance()->AddAction("horn", SDL_SCANCODE_SPACE, InputManager::eDevice::KEYBOARD);
 	InputManager::Instance()->AddAction("left", SDL_SCANCODE_LEFT, InputManager::eDevice::KEYBOARD);
 	InputManager::Instance()->AddAction("right", SDL_SCANCODE_RIGHT, InputManager::eDevice::KEYBOARD);
+	InputManager::Instance()->AddAction("up", SDL_SCANCODE_UP, InputManager::eDevice::KEYBOARD);
+	InputManager::Instance()->AddAction("down", SDL_SCANCODE_DOWN, InputManager::eDevice::KEYBOARD);
 	
 	text = TextManager::Instance()->CreateText("Hello!", "..\\content\\Inconsolata-Bold.ttf", 24, Color::red);
 	
@@ -80,7 +89,7 @@ void Engine::Update()
 	//Test
 	if (InputManager::Instance()->GetActionButton("fire") == InputManager::eButtonState::PRESSED)
 	{
-		std::cout << "button\n";
+		std::cout << "pew\n";
 	}
 
 	//Pause
@@ -90,7 +99,7 @@ void Engine::Update()
 	}
 
 	//Movement
-	/*if (InputManager::Instance()->GetActionButton("left") == InputManager::eButtonState::PRESSED ||
+	if (InputManager::Instance()->GetActionButton("left") == InputManager::eButtonState::PRESSED ||
 		InputManager::Instance()->GetActionButton("left") == InputManager::eButtonState::HELD)
 	{
 		angle -= 180.0f * Timer::Instance()->DeltaTime();
@@ -100,22 +109,33 @@ void Engine::Update()
 		InputManager::Instance()->GetActionButton("right") == InputManager::eButtonState::HELD)
 	{
 		angle += 180.0f * Timer::Instance()->DeltaTime();
-	}*/
+	}
 
 	float steer = InputManager::Instance()->GetActionRelative("steer");
 	angle += (steer * 200.0f) * Timer::Instance()->DeltaTime();
 
 	Vector2D force = Vector2D::zero;
-	if (InputManager::Instance()->GetButtonState(SDL_SCANCODE_UP) == InputManager::eButtonState::PRESSED ||
-		InputManager::Instance()->GetButtonState(SDL_SCANCODE_UP) == InputManager::eButtonState::HELD)
+	if (InputManager::Instance()->GetActionButton("up") == InputManager::eButtonState::PRESSED ||
+		InputManager::Instance()->GetActionButton("up") == InputManager::eButtonState::HELD)
 	{
 		force.y = -300.0f * Timer::Instance()->DeltaTime();
 	}
 
-	if (InputManager::Instance()->GetButtonState(SDL_SCANCODE_DOWN) == InputManager::eButtonState::PRESSED ||
-		InputManager::Instance()->GetButtonState(SDL_SCANCODE_DOWN) == InputManager::eButtonState::HELD)
+	if (InputManager::Instance()->GetActionButton("down") == InputManager::eButtonState::PRESSED ||
+		InputManager::Instance()->GetActionButton("down") == InputManager::eButtonState::HELD)
 	{
 		force.y = 300.0f * Timer::Instance()->DeltaTime();
+	}
+
+	//Sound
+	if (InputManager::Instance()->GetActionButton("horn") == InputManager::eButtonState::PRESSED)
+	{
+		std::cout << "beep\n";
+		AudioSystem::Instance()->PlaySound("horn", false);
+	}
+	if (InputManager::Instance()->GetActionButton("fire") == InputManager::eButtonState::PRESSED)
+	{
+		AudioSystem::Instance()->PlaySound("laser", false);
 	}
 
 	Matrix22 mx;
