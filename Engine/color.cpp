@@ -28,4 +28,3 @@ const Color Color::black = Color(0.0f, 0.0f, 0.0f);
 //
 //	return stream;
 //}
-

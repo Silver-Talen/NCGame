@@ -1,6 +1,6 @@
 #pragma once
 
-#include "math.h"
+#include "_math.h"
 #include <assert.h>
 
 class ENGINE_API Color
@@ -64,4 +64,3 @@ public:
 	//friend std::ostream & operator << (std::ostream & stream, const Color & color) { stream << "{" << color.r << ", " << color.g << ", " << color.b << "}"; return stream; }
 	//friend std::istream & operator >> (std::istream & stream, Color & color);
 };
-

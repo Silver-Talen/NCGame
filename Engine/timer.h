@@ -2,7 +2,7 @@
 #include "singleton.h"
 #include "engine.h"
 
-class Timer : public Singleton<Timer>
+class ENGINE_API Timer : public Singleton<Timer>
 {
 public:
 

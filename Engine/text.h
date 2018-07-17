@@ -3,7 +3,7 @@
 #include "vector2D.h"
 #include <string>
 
-class Text
+class ENGINE_API Text
 {
 public:
 	Text(const std::string& text, const std::string& fontName, int fontSize, const Color& color);
