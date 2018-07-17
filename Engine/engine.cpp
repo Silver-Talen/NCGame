@@ -1,12 +1,10 @@
 #include "engine.h"
-#include "text.h"
 #include "textManager.h"
 #include "textureManager.h"
 #include "renderer.h"
 #include "audioSystem.h"
 #include "inputManager.h"
 #include "timer.h"
-#include "matrix22.h"
 
 bool Engine::Initialize()
 {
