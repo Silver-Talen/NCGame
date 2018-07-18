@@ -8,6 +8,9 @@
 #include "inputManager.h"
 #include "timer.h"
 #include "matrix22.h"
+#include "entity.h"
+#include "transformComponent.h"
+#include "spriteComponent.h"
 #include <assert.h>
 #include <iostream>
 
@@ -16,6 +19,7 @@ Vector2D position(400.0f, 300.0f);
 //Vector2D scalar(5.0f, 5.0f);
 float angle = 0.0f;
 Text* text;
+Entity* entity = nullptr;
 
 bool Game::Initialize()
 {
@@ -36,8 +40,20 @@ bool Game::Initialize()
 	InputManager::Instance()->AddAction("up", SDL_SCANCODE_UP, InputManager::eDevice::KEYBOARD);
 	InputManager::Instance()->AddAction("down", SDL_SCANCODE_DOWN, InputManager::eDevice::KEYBOARD);
 
+	//Text
 	text = TextManager::Instance()->CreateText("Hello!", "..\\content\\Inconsolata-Bold.ttf", 24, Color::red);
 
+	//
+	entity = new Entity(ID("player"));
+	TransformComponent* transformComponent = new TransformComponent(entity);
+	transformComponent->Create(Vector2D(30.0f, 30.0f));
+	entity->AddComponent(transformComponent);
+	
+	SpriteComponent* spriteComponent = new SpriteComponent(entity);
+	spriteComponent->Create("..\\content\\car.bmp");
+	entity->AddComponent(spriteComponent);
+
+	//
 	m_running = success;
 
 	return success;
@@ -52,6 +68,8 @@ void Game::Update()
 {
 	m_running = !m_engine->IsQuit();
 	m_engine->Update();
+
+	entity->Update();
 
 	int x, y;
 	SDL_GetMouseState(&x, &y);
@@ -77,8 +95,8 @@ void Game::Update()
 		angle += 180.0f * Timer::Instance()->DeltaTime();
 	}
 
-	float steer = InputManager::Instance()->GetActionRelative("steer");
-	angle += (steer * 200.0f) * Timer::Instance()->DeltaTime();
+	//float steer = InputManager::Instance()->GetActionRelative("steer");
+	//angle += (steer * 200.0f) * Timer::Instance()->DeltaTime();
 
 	Vector2D force = Vector2D::zero;
 	if (InputManager::Instance()->GetActionButton("up") == InputManager::eButtonState::PRESSED ||
@@ -126,6 +144,8 @@ void Game::Update()
 	SDL_Texture* texture = TextureManager::Instance()->GetTexture("..\\content\\car.bmp");
 	Renderer::Instance()->DrawTexture(texture, position, angle);
 	//Renderer::Instance()->DrawTexture(texture, position, scalar, 0.0f);
+
+	entity->Draw();
 
 	Renderer::Instance()->EndFrame();
 }
