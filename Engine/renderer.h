@@ -4,6 +4,8 @@
 #include "color.h"
 #include "vector2D.h"
 
+class Texture;
+
 class ENGINE_API Renderer : public Singleton<Renderer>
 {
 public:
@@ -19,6 +21,7 @@ public:
 	void SetColor(const Color& color);
 	void DrawTexture(SDL_Texture* texture, const Vector2D& position, float angle);
 	void DrawTexture(SDL_Texture* texture, const Vector2D& position, const Vector2D& scale, float angle);
+	void DrawTexture(Texture* texture, const Vector2D& position, const Vector2D& scale, float angle);
 
 	friend Singleton<Renderer>;
 

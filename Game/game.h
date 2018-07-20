@@ -18,4 +18,3 @@ protected:
 	bool m_running = false;
 	Engine* m_engine = nullptr;
 };
-
