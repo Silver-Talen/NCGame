@@ -1,5 +1,6 @@
 #include "game.h"
 #include "engine.h"
+#include "scene.h"
 #include "text.h"
 #include "textManager.h"
 #include "textureManager.h"
@@ -19,12 +20,30 @@
 //Vector2D scalar(5.0f, 5.0f);
 //float angle = 0.0f;
 //Text* text;
-Entity* entity = nullptr;
-ShipControllerComponent* shipControllerComponent = nullptr;
-
 bool Game::Initialize()
 {
 	bool success = m_engine->Initialize();
+	m_scene = new Scene();
+
+	for (size_t i = 0; i < 20; i++)
+	{
+		Entity* entity = new Entity(ID());
+		TransformComponent* transformComponent = new TransformComponent(entity);
+		float x = (float)(rand() % 800);
+		float y = (float)(rand() % 600);
+		transformComponent->Create(Vector2D(x, y));
+		entity->AddComponent(transformComponent);
+
+		SpriteComponent* spriteComponent = new SpriteComponent(entity);
+		spriteComponent->Create("..\\content\\ship.png");
+		entity->AddComponent(spriteComponent);
+
+		ShipControllerComponent* shipControllerComponent = new ShipControllerComponent(entity);
+		shipControllerComponent->Create(200.0f);
+		entity->AddComponent(shipControllerComponent);
+
+		m_scene->AddEntity(entity);
+	}
 
 	////Sounds
 	//AudioSystem::Instance()->AddSound("horn", "..\\content\\horn.wav");
@@ -44,19 +63,21 @@ bool Game::Initialize()
 	////Text
 	//text = TextManager::Instance()->CreateText("Hello!", "..\\content\\Inconsolata-Bold.ttf", 24, Color::red);
 
-	//Entity Creation
-	entity = new Entity(ID("player"));
-	TransformComponent* transformComponent = new TransformComponent(entity);
-	transformComponent->Create(Vector2D(400.0f, 500.0f));
-	entity->AddComponent(transformComponent);
+	////Entity Creation
+	//Entity* entity = new Entity(ID("player"));
+	//TransformComponent* transformComponent = new TransformComponent(entity);
+	//transformComponent->Create(Vector2D(400.0f, 500.0f));
+	//entity->AddComponent(transformComponent);
 
-	SpriteComponent* spriteComponent = new SpriteComponent(entity);
-	spriteComponent->Create("..\\content\\ship.bmp");
-	entity->AddComponent(spriteComponent);
+	//SpriteComponent* spriteComponent = new SpriteComponent(entity);
+	//spriteComponent->Create("..\\content\\ship.bmp");
+	//entity->AddComponent(spriteComponent);
 
-	shipControllerComponent = new ShipControllerComponent(entity);
-	shipControllerComponent->Create(200.0f);
-	entity->AddComponent(shipControllerComponent);
+	//ShipControllerComponent* shipControllerComponent = new ShipControllerComponent(entity);
+	//shipControllerComponent->Create(200.0f);
+	//entity->AddComponent(shipControllerComponent);
+
+	//m_scene->AddEntity(entity);
 	
 	//
 	m_running = success;
@@ -74,8 +95,7 @@ void Game::Update()
 	m_running = !m_engine->IsQuit();
 	m_engine->Update();
 
-	entity->Update();
-	shipControllerComponent->Update();
+	m_scene->Update();
 
 	//int x, y;
 	//SDL_GetMouseState(&x, &y);
@@ -156,9 +176,9 @@ void Game::Update()
 	//Renderer::Instance()->EndFrame();
 
 	Renderer::Instance()->BeginFrome();
-	Renderer::Instance()->SetColor(Color::black);
+	Renderer::Instance()->SetColor(Color::red);
 
-	entity->Draw();
+	m_scene->Draw();
 
 	Renderer::Instance()->EndFrame();
 }

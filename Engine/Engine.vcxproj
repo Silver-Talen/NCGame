@@ -80,7 +80,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\NCGameMiddleware\SDL2-2.0.8\include;$(ProjectDir)..\..\NCGameMiddleware\FMOD\api\lowlevel\inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>sdl2.lib;sdl2main.lib;sdl2_ttf.lib;fmodL_vc.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sdl2.lib;sdl2main.lib;sdl2_ttf.lib;sdl2_image.lib;fmodL_vc.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\NCGameMiddleware\FMOD\api\lowlevel\lib;$(ProjectDir)..\..\NCGameMiddleware\SDL2-2.0.8\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -94,7 +94,7 @@
       <PreprocessorDefinitions>ENGINE_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>sdl2.lib;sdl2main.lib;sdl2_ttf.lib;fmodL64_vc.lib;fmod64_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sdl2.lib;sdl2main.lib;sdl2_ttf.lib;sdl2_image.lib;fmodL64_vc.lib;fmod64_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\NCGameMiddleware\FMOD\api\lowlevel\lib;$(ProjectDir)..\..\NCGameMiddleware\SDL2-2.0.8\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -112,7 +112,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>sdl2.lib;sdl2main.lib;sdl2_ttf.lib;fmodL_vc.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sdl2.lib;sdl2main.lib;sdl2_ttf.lib;sdl2_image.lib;fmodL_vc.lib;fmod_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\NCGameMiddleware\FMOD\api\lowlevel\lib;$(ProjectDir)..\..\NCGameMiddleware\SDL2-2.0.8\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -130,7 +130,7 @@
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>sdl2.lib;sdl2main.lib;sdl2_ttf.lib;fmodL64_vc.lib;fmod64_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sdl2.lib;sdl2main.lib;sdl2_ttf.lib;sdl2_image.lib;fmodL64_vc.lib;fmod64_vc.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProjectDir)..\..\NCGameMiddleware\FMOD\api\lowlevel\lib;$(ProjectDir)..\..\NCGameMiddleware\SDL2-2.0.8\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -145,6 +145,7 @@
     <ClInclude Include="inputManager.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="renderComponent.h" />
+    <ClInclude Include="scene.h" />
     <ClInclude Include="shipControllerComponent.h" />
     <ClInclude Include="spriteComponent.h" />
     <ClInclude Include="texture.h" />
@@ -170,6 +171,7 @@
     <ClCompile Include="id.cpp" />
     <ClCompile Include="inputManager.cpp" />
     <ClCompile Include="Object.cpp" />
+    <ClCompile Include="scene.cpp" />
     <ClCompile Include="shipControllerComponent.cpp" />
     <ClCompile Include="spriteComponent.cpp" />
     <ClCompile Include="texture.cpp" />
