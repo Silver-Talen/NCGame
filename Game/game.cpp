@@ -1,20 +1,13 @@
 #include "game.h"
 #include "engine.h"
 #include "scene.h"
-#include "text.h"
 #include "textManager.h"
 #include "textureManager.h"
 #include "renderer.h"
 #include "audioSystem.h"
 #include "inputManager.h"
-#include "timer.h"
-#include "matrix22.h"
 #include "entity.h"
-#include "transformComponent.h"
-#include "spriteComponent.h"
-#include "shipControllerComponent.h"
-#include <assert.h>
-#include <iostream>
+#include "ship.h"
 
 //Vector2D position(400.0f, 300.0f);
 //Vector2D scalar(5.0f, 5.0f);
@@ -27,22 +20,12 @@ bool Game::Initialize()
 
 	for (size_t i = 0; i < 20; i++)
 	{
-		Entity* entity = new Entity(ID());
-		TransformComponent* transformComponent = new TransformComponent(entity);
+		Ship* ship = new Ship();
 		float x = (float)(rand() % 800);
 		float y = (float)(rand() % 600);
-		transformComponent->Create(Vector2D(x, y));
-		entity->AddComponent(transformComponent);
+		ship->Create(Vector2D(x, y));
 
-		SpriteComponent* spriteComponent = new SpriteComponent(entity);
-		spriteComponent->Create("..\\content\\ship.png");
-		entity->AddComponent(spriteComponent);
-
-		ShipControllerComponent* shipControllerComponent = new ShipControllerComponent(entity);
-		shipControllerComponent->Create(200.0f);
-		entity->AddComponent(shipControllerComponent);
-
-		m_scene->AddEntity(entity);
+		m_scene->AddEntity(ship);
 	}
 
 	////Sounds
@@ -176,7 +159,7 @@ void Game::Update()
 	//Renderer::Instance()->EndFrame();
 
 	Renderer::Instance()->BeginFrome();
-	Renderer::Instance()->SetColor(Color::red);
+	Renderer::Instance()->SetColor(Color(0.0f, 0.8f, 1.0f));
 
 	m_scene->Draw();
 

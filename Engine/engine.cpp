@@ -3,6 +3,7 @@
 #include "textureManager.h"
 #include "renderer.h"
 #include "audioSystem.h"
+#include "physics.h"
 #include "inputManager.h"
 #include "timer.h"
 
@@ -15,8 +16,9 @@ bool Engine::Initialize()
 	Renderer::Instance()->Initialize(this);
 	TextureManager::Instance()->Initialize(this);
 	TextManager::Instance()->Initialize(this);
-	InputManager::Instance()->Initialize(this);
 	AudioSystem::Instance()->Initialize(this);
+	Physics::Instance()->Initialize(this);
+	InputManager::Instance()->Initialize(this);
 	
 	return true;
 }
@@ -27,8 +29,9 @@ void Engine::Shutdown()
 	Renderer::Instance()->Shutdown();
 	TextureManager::Instance()->Shutdown();
 	TextManager::Instance()->Shutdown();
-	InputManager::Instance()->Shutdown();
 	AudioSystem::Instance()->Shutdown();
+	Physics::Instance()->Shutdown();
+	InputManager::Instance()->Shutdown();
 
 	SDL_DestroyWindow(m_window);
 	SDL_Quit();
@@ -38,7 +41,10 @@ void Engine::Update()
 {
 	Timer::Instance()->Update();
 	//Timer::Instance()->SetTimeScale(5.0f);
+	Physics::Instance()->Update();
 	InputManager::Instance()->Update();
+	AudioSystem::Instance()->Update();
+
 
 	SDL_Event event;
 	SDL_PollEvent(&event);

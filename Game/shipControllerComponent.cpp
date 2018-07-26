@@ -1,4 +1,5 @@
 #include "shipControllerComponent.h"
+#include "kinematicComponent.h"
 #include "transformComponent.h"
 #include "inputManager.h"
 #include "entity.h"
@@ -30,8 +31,13 @@ void ShipControllerComponent::Update()
 	{
 		force.x += 1.0f;
 	}
+
+	KinematicComponent* kinematic = m_owner->GetComponent<KinematicComponent>();
+	if (kinematic)
+	{
+		kinematic->ApplyForce(force * m_speed, KinematicComponent::VELOCITY);
+	}
 	
-	TransformComponent* transform = m_owner->GetComponent<TransformComponent>();
-	transform->position.x += (force.x * m_speed) * Timer::Instance()->DeltaTime();
-	
+	/*TransformComponent* transform = m_owner->GetComponent<TransformComponent>();
+	transform->position.x += (force.x * m_speed) * Timer::Instance()->DeltaTime();*/
 }
