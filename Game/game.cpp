@@ -18,15 +18,16 @@ bool Game::Initialize()
 	bool success = m_engine->Initialize();
 	m_scene = new Scene();
 
-	for (size_t i = 0; i < 20; i++)
-	{
-		Ship* ship = new Ship();
-		float x = (float)(rand() % 800);
+	//for (size_t i = 0; i < 20; i++)
+	//{
+		Ship* ship = new Ship(m_scene);
+		/*float x = (float)(rand() % 800);
 		float y = (float)(rand() % 600);
-		ship->Create(Vector2D(x, y));
+		ship->Create(Vector2D(x, y));*/
+		ship->Create(Vector2D(750.0f, 500.0f));
 
 		m_scene->AddEntity(ship);
-	}
+	//}
 
 	////Sounds
 	//AudioSystem::Instance()->AddSound("horn", "..\\content\\horn.wav");

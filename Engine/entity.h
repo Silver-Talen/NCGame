@@ -2,13 +2,15 @@
 
 #include "object.h"
 #include "component.h"
+#include "transform.h"
+#include "scene.h"
 #include <vector>
 #include <assert.h>
 
 class ENGINE_API Entity : public Object
 {
 public:
-	Entity(const ID& id = ID()) : Object(id) {}
+	Entity(Scene* scene, const ID& id = ID()) : m_scene(scene), Object(id) {}
 	virtual ~Entity() {}
 
 	void Update();
@@ -39,6 +41,11 @@ public:
 		return component;
 	}
 
+	Transform& GetTransform() { return m_transform; }
+	Scene* GetScene() { return m_scene; }
+
 protected:
+	Transform m_transform;
+	Scene * m_scene;
 	std::vector<Component*> m_components;
 };

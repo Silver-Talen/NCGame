@@ -1,15 +1,19 @@
 #include "shipControllerComponent.h"
 #include "kinematicComponent.h"
-#include "transformComponent.h"
+#include "transform.h"
 #include "inputManager.h"
 #include "entity.h"
+#include "ship.h"
+#include "missile.h"
 #include "timer.h"
+#include <iostream>
 
 void ShipControllerComponent::Create(float speed)
 {
 	m_speed = speed;
 	InputManager::Instance()->AddAction("left", SDL_SCANCODE_LEFT, InputManager::eDevice::KEYBOARD);
 	InputManager::Instance()->AddAction("right", SDL_SCANCODE_RIGHT, InputManager::eDevice::KEYBOARD);
+	InputManager::Instance()->AddAction("fire", SDL_SCANCODE_SPACE, InputManager::eDevice::KEYBOARD);
 }
 
 void ShipControllerComponent::Destroy()
@@ -37,7 +41,13 @@ void ShipControllerComponent::Update()
 	{
 		kinematic->ApplyForce(force * m_speed, KinematicComponent::VELOCITY);
 	}
-	
-	/*TransformComponent* transform = m_owner->GetComponent<TransformComponent>();
-	transform->position.x += (force.x * m_speed) * Timer::Instance()->DeltaTime();*/
+
+	if (InputManager::Instance()->GetActionButton("fire") == InputManager::eButtonState::PRESSED)
+	{
+		Missile* missile = new Missile(m_owner->GetScene());
+		missile->Create(m_owner->GetTransform().position, Vector2D::down, 800.0f);
+		m_owner->GetScene()->AddEntity(missile);
+
+		std::cout << "pew" << std::endl;
+	}
 }
