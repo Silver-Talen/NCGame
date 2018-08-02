@@ -20,6 +20,16 @@ void Entity::Draw()
 	}
 }
 
+void Entity::Destroy()
+{
+	for (Component* component : m_components)
+	{
+		component->Destroy();
+		delete component;
+	}
+	m_components.clear();
+}
+
 void Entity::AddComponent(Component * component)
 {
 	assert(component);

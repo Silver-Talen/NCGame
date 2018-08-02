@@ -4,10 +4,10 @@
 #include "textManager.h"
 #include "textureManager.h"
 #include "renderer.h"
-#include "audioSystem.h"
-#include "inputManager.h"
 #include "entity.h"
 #include "ship.h"
+#include "enemy.h"
+#include "fileSystem.h"
 
 //Vector2D position(400.0f, 300.0f);
 //Vector2D scalar(5.0f, 5.0f);
@@ -16,54 +16,29 @@
 bool Game::Initialize()
 {
 	bool success = m_engine->Initialize();
+	FileSystem::Instance()->SetPathname("..\\galaga\\");
 	m_scene = new Scene();
 
-	//for (size_t i = 0; i < 20; i++)
-	//{
-		Ship* ship = new Ship(m_scene);
-		/*float x = (float)(rand() % 800);
-		float y = (float)(rand() % 600);
-		ship->Create(Vector2D(x, y));*/
-		ship->Create(Vector2D(750.0f, 500.0f));
+	Ship* ship = new Ship(m_scene, "player");
+	ship->Create(Vector2D(400.0f, 550.0f));
+	m_scene->AddEntity(ship);
+		
+	Enemy* enemy = new Enemy(m_scene);
+	enemy->Create(Vector2D(400.0f, 25.0f), 3.0f);
+	m_scene->AddEntity(enemy);
+		
+	Enemy* enemy1 = new Enemy(m_scene);
+	enemy1->Create(Vector2D(350.0f, 25.0f), 3.0f);
+	m_scene->AddEntity(enemy1);
+		
+	Enemy* enemy2 = new Enemy(m_scene);
+	enemy2->Create(Vector2D(375.0f, 65.0f), 3.0f);
+	m_scene->AddEntity(enemy2);
 
-		m_scene->AddEntity(ship);
-	//}
+	Enemy* enemy3 = new Enemy(m_scene);
+	enemy3->Create(Vector2D(325.0f, 65.0f), 3.0f);
+	m_scene->AddEntity(enemy3);
 
-	////Sounds
-	//AudioSystem::Instance()->AddSound("horn", "..\\content\\horn.wav");
-	//AudioSystem::Instance()->AddSound("laser", "..\\content\\laser.wav");
-
-	////Mouse Actions
-	//InputManager::Instance()->AddAction("fire", SDL_BUTTON_LEFT, InputManager::eDevice::MOUSE);
-	//InputManager::Instance()->AddAction("steer", InputManager::eAxis::X, InputManager::eDevice::MOUSE);
-
-	////Keyboard Actions
-	//InputManager::Instance()->AddAction("horn", SDL_SCANCODE_SPACE, InputManager::eDevice::KEYBOARD);
-	//InputManager::Instance()->AddAction("left", SDL_SCANCODE_LEFT, InputManager::eDevice::KEYBOARD);
-	//InputManager::Instance()->AddAction("right", SDL_SCANCODE_RIGHT, InputManager::eDevice::KEYBOARD);
-	//InputManager::Instance()->AddAction("up", SDL_SCANCODE_UP, InputManager::eDevice::KEYBOARD);
-	//InputManager::Instance()->AddAction("down", SDL_SCANCODE_DOWN, InputManager::eDevice::KEYBOARD);
-
-	////Text
-	//text = TextManager::Instance()->CreateText("Hello!", "..\\content\\Inconsolata-Bold.ttf", 24, Color::red);
-
-	////Entity Creation
-	//Entity* entity = new Entity(ID("player"));
-	//TransformComponent* transformComponent = new TransformComponent(entity);
-	//transformComponent->Create(Vector2D(400.0f, 500.0f));
-	//entity->AddComponent(transformComponent);
-
-	//SpriteComponent* spriteComponent = new SpriteComponent(entity);
-	//spriteComponent->Create("..\\content\\ship.bmp");
-	//entity->AddComponent(spriteComponent);
-
-	//ShipControllerComponent* shipControllerComponent = new ShipControllerComponent(entity);
-	//shipControllerComponent->Create(200.0f);
-	//entity->AddComponent(shipControllerComponent);
-
-	//m_scene->AddEntity(entity);
-	
-	//
 	m_running = success;
 
 	return success;
@@ -159,8 +134,8 @@ void Game::Update()
 
 	//Renderer::Instance()->EndFrame();
 
-	Renderer::Instance()->BeginFrome();
-	Renderer::Instance()->SetColor(Color(0.0f, 0.8f, 1.0f));
+	Renderer::Instance()->BeginFrame();
+	Renderer::Instance()->SetColor(Color::black);
 
 	m_scene->Draw();
 

@@ -10,11 +10,29 @@
 class ENGINE_API Entity : public Object
 {
 public:
+	enum eState
+	{
+		INACTIVE,
+		ACTIVE,
+		DESTROY
+	};
+
+public:
 	Entity(Scene* scene, const ID& id = ID()) : m_scene(scene), Object(id) {}
 	virtual ~Entity() {}
 
-	void Update();
-	void Draw();
+	virtual void Update();
+	virtual void Draw();
+	virtual void Destroy();
+
+	Scene* GetScene() { return m_scene; }
+	Transform& GetTransform() { return m_transform; }
+
+	void SetState(eState state) { m_state = state; }
+	eState GetState() { return m_state; }
+
+	void SetTag(const ID& tag) { m_tag = tag; }
+	ID GetTag() { return m_tag; }
 
 	template <typename T>
 	T* AddComponent()
@@ -41,11 +59,12 @@ public:
 		return component;
 	}
 
-	Transform& GetTransform() { return m_transform; }
-	Scene* GetScene() { return m_scene; }
+	
 
 protected:
 	Transform m_transform;
-	Scene * m_scene;
+	ID m_tag;
 	std::vector<Component*> m_components;
+	Scene * m_scene;
+	eState m_state = ACTIVE;
 };

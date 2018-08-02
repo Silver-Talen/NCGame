@@ -1,6 +1,7 @@
 #include "scene.h"
 #include "entity.h"
 #include <assert.h>
+#include <algorithm>
 
 bool Scene::Initialize()
 {
@@ -18,10 +19,22 @@ void Scene::Shutdown()
 
 void Scene::Update()
 {
-	size_t size = m_entities.size();
-	for (size_t i = 0; i < size; i++)
+	for (Entity* entity : m_entities)
 	{
-		m_entities[i]->Update();
+		entity->Update();
+	}
+
+	std::list<Entity*>::iterator iter = m_entities.begin();
+	while (iter != m_entities.end())
+	{
+		if ((*iter)->GetState() == Entity::DESTROY)
+		{
+			iter = RemoveEntity(*iter);
+		}
+		else
+		{
+			iter++;
+		}
 	}
 }
 
@@ -40,7 +53,7 @@ void Scene::AddEntity(Entity * entity)
 	m_entities.push_back(entity);
 }
 
-void Scene::RemoveEntity(Entity * entity)
+std::list<Entity*>::iterator Scene::RemoveEntity(Entity * entity, bool destroy)
 {
 	assert(entity);
 	assert(std::find(m_entities.begin(), m_entities.end(), entity) != m_entities.end());
@@ -48,8 +61,14 @@ void Scene::RemoveEntity(Entity * entity)
 	auto iter = std::find(m_entities.begin(), m_entities.end(), entity);
 	if (iter != m_entities.end())
 	{
-		m_entities.erase(iter);
+		if (destroy)
+		{
+			(*iter)->Destroy();
+			delete *iter;
+		}
+		iter = m_entities.erase(iter);
 	}
+	return iter;
 }
 
 Entity * Scene::FindEntity(const ID & id)
@@ -64,4 +83,18 @@ Entity * Scene::FindEntity(const ID & id)
 		}
 	}
 	return entity;
+}
+
+std::vector<Entity*> Scene::GetEntitiesWithTag(const ID & tag)
+{
+	std::vector<Entity*> entities;
+
+	for(Entity* entity : m_entities)
+	{
+		if (entity->GetTag() == tag)
+		{
+		}
+	}
+
+	return entities;
 }

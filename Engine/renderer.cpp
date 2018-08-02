@@ -17,7 +17,7 @@ void Renderer::Shutdown()
 	IMG_Quit();
 }
 
-void Renderer::BeginFrome()
+void Renderer::BeginFrame()
 {
 	SDL_RenderClear(m_renderer);
 }
@@ -54,4 +54,13 @@ void Renderer::DrawTexture(SDL_Texture * texture, const Vector2D & position, con
 void Renderer::DrawTexture(Texture * texture, const Vector2D & position, const Vector2D & scale, float angle)
 {
 	DrawTexture(texture->m_sdlTexture, position, scale, angle);
+}
+
+Vector2D Renderer::GetSize()
+{
+	SDL_Point size;
+
+	SDL_GetRendererOutputSize(m_renderer, &size.x, &size.y);
+
+	return size;
 }
