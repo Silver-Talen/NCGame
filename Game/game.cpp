@@ -23,22 +23,13 @@ bool Game::Initialize()
 	ship->Create(Vector2D(400.0f, 550.0f));
 	m_scene->AddEntity(ship);
 		
-	Enemy* enemy = new Enemy(m_scene);
-	enemy->Create(Vector2D(400.0f, 25.0f), 3.0f);
-	m_scene->AddEntity(enemy);
-		
-	Enemy* enemy1 = new Enemy(m_scene);
-	enemy1->Create(Vector2D(350.0f, 25.0f), 3.0f);
-	m_scene->AddEntity(enemy1);
-		
-	Enemy* enemy2 = new Enemy(m_scene);
-	enemy2->Create(Vector2D(375.0f, 65.0f), 3.0f);
-	m_scene->AddEntity(enemy2);
-
-	Enemy* enemy3 = new Enemy(m_scene);
-	enemy3->Create(Vector2D(325.0f, 65.0f), 3.0f);
-	m_scene->AddEntity(enemy3);
-
+	for (size_t i = 0; i < 10; i++)
+	{
+		Enemy* enemy = new Enemy(m_scene);
+		enemy->Create(Vector2D(400.0f, 25.0f), 3.0f);
+		m_scene->AddEntity(enemy);
+	}
+	
 	m_running = success;
 
 	return success;
@@ -54,7 +45,13 @@ void Game::Update()
 	m_running = !m_engine->IsQuit();
 	m_engine->Update();
 
+	Renderer::Instance()->BeginFrame();
+
 	m_scene->Update();
+	Renderer::Instance()->SetColor(Color::black);
+	m_scene->Draw();
+
+	Renderer::Instance()->EndFrame();
 
 	//int x, y;
 	//SDL_GetMouseState(&x, &y);
@@ -133,11 +130,4 @@ void Game::Update()
 	//entity->Draw();
 
 	//Renderer::Instance()->EndFrame();
-
-	Renderer::Instance()->BeginFrame();
-	Renderer::Instance()->SetColor(Color::black);
-
-	m_scene->Draw();
-
-	Renderer::Instance()->EndFrame();
 }

@@ -4,6 +4,7 @@
 #include "component.h"
 #include "transform.h"
 #include "scene.h"
+#include "event.h"
 #include <vector>
 #include <assert.h>
 
@@ -24,6 +25,8 @@ public:
 	virtual void Update();
 	virtual void Draw();
 	virtual void Destroy();
+
+	virtual void OnEvent(const Event& event);
 
 	Scene* GetScene() { return m_scene; }
 	Transform& GetTransform() { return m_transform; }

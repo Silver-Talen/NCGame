@@ -63,4 +63,6 @@ void Engine::Update()
 			m_isQuit = true;
 		}
 	}
+
+	SDL_PumpEvents();
 }

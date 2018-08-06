@@ -30,6 +30,10 @@ void Entity::Destroy()
 	m_components.clear();
 }
 
+void Entity::OnEvent(const Event & event)
+{
+}
+
 void Entity::AddComponent(Component * component)
 {
 	assert(component);

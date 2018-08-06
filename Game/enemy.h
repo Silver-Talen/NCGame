@@ -10,10 +10,6 @@ public:
 
 	void Create(const Vector2D& position, float movementTimer);
 	void Update();
-	void Destroy();
 
-private:
-	Vector2D m_force = Vector2D::zero;
-	float m_speed;
-	float m_movementTimer;
+	void OnEvent(const Event& event);
 };

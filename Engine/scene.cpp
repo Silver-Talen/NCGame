@@ -1,5 +1,7 @@
 #include "scene.h"
 #include "entity.h"
+#include "collisionComponent.h"
+#include "evenManager.h"
 #include <assert.h>
 #include <algorithm>
 
@@ -22,6 +24,36 @@ void Scene::Update()
 	for (Entity* entity : m_entities)
 	{
 		entity->Update();
+	}
+
+	std::vector<ICollisionComponent*> collisionComponents;
+	for (Entity* entity : m_entities)
+	{
+		ICollisionComponent* collisionComponent = entity->GetComponent<ICollisionComponent>();
+		if (collisionComponent)
+		{
+			collisionComponents.push_back(collisionComponent);
+		}
+	}
+
+	for (size_t i = 0; i < collisionComponents.size(); i++)
+	{
+		for (size_t j = i + 1; j < collisionComponents.size(); j++)
+		{
+			if (collisionComponents[i]->Intersects(collisionComponents[j]))
+			{
+				Event event;
+				event.eventID = "collision";
+
+				event.reciever = collisionComponents[i]->GetOwner();
+				event.sender = collisionComponents[j]->GetOwner();
+				EvenManager::Instance()->SendMessage(event);
+				
+				event.reciever = collisionComponents[j]->GetOwner();
+				event.sender = collisionComponents[i]->GetOwner();
+				EvenManager::Instance()->SendMessage(event);
+			}
+		}
 	}
 
 	std::list<Entity*>::iterator iter = m_entities.begin();

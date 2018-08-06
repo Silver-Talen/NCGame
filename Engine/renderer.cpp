@@ -8,7 +8,7 @@ bool Renderer::Initialize(Engine * engine)
 	m_renderer = SDL_CreateRenderer(m_engine->GetWindow(), -1, 0);
 	IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
 
-	return true;
+	return 1;
 }
 
 void Renderer::Shutdown()
@@ -44,7 +44,6 @@ void Renderer::DrawTexture(SDL_Texture * texture, const Vector2D & position, con
 {
 	SDL_Point point = position;
 	SDL_Rect dest = { point.x, point.y, 0, 0 };
-	//SDL_Rect dest = { (point.x * scale.x), (point.y * scale.y), 0, 0 };
 	SDL_QueryTexture(texture, nullptr, nullptr, &dest.w, &dest.h);
 	dest.w *= static_cast<int>(scale.x);
 	dest.h *= static_cast<int>(scale.y);
@@ -54,6 +53,17 @@ void Renderer::DrawTexture(SDL_Texture * texture, const Vector2D & position, con
 void Renderer::DrawTexture(Texture * texture, const Vector2D & position, const Vector2D & scale, float angle)
 {
 	DrawTexture(texture->m_sdlTexture, position, scale, angle);
+}
+
+void Renderer::DebugDrawLine(const Vector2D & start, const Vector2D & end, const Color & color)
+{
+	int x1 = static_cast<int>(start.x);
+	int y1 = static_cast<int>(start.y);
+	int x2 = static_cast<int>(end.x);
+	int y2 = static_cast<int>(end.y);
+
+	SetColor(color);
+	SDL_RenderDrawLine(m_renderer, x1, y1, x2, y2);
 }
 
 Vector2D Renderer::GetSize()

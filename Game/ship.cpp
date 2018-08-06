@@ -1,12 +1,13 @@
 #include "ship.h"
-#include "transform.h"
 #include "kinematicComponent.h"
 #include "spriteComponent.h"
+#include "aabbComponent.h"
 #include "shipControllerComponent.h"
 #include "renderer.h"
 
 void Ship::Create(const Vector2D & position)
 {
+	SetTag("player");
 	m_transform.position = position;
 	m_transform.scale = Vector2D(2.0f, 2.0f);
 
@@ -18,6 +19,9 @@ void Ship::Create(const Vector2D & position)
 
 	SpriteComponent* spriteComponent = AddComponent<SpriteComponent>();
 	spriteComponent->Create("ship.png", Vector2D(0.5f, 0.5f));
+
+	AABBComponent* aabbComponent = AddComponent<AABBComponent>();
+	aabbComponent->Create();
 }
 
 void Ship::Update()
@@ -26,4 +30,16 @@ void Ship::Update()
 
 	Vector2D size = Renderer::Instance()->GetSize();
 	m_transform.position.x = Math::Clamp(m_transform.position.x, 0.0f, size.x);
+}
+
+
+void Ship::OnEvent(const Event & event)
+{
+	if (event.eventID == "collision")
+	{
+		if (event.sender->GetTag() == "enemy")
+		{
+			SetState(Entity::DESTROY);
+		}
+	}
 }

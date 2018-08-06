@@ -21,6 +21,12 @@
     <Filter Include="Components">
       <UniqueIdentifier>{7567a999-67aa-4514-93c2-c0f45f0ca629}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{57864fe1-4c72-438c-bba6-b225a346248f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Event">
+      <UniqueIdentifier>{47763186-cdcb-44e7-8946-9e79cafa593e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="singleton.h">
@@ -95,9 +101,6 @@
     <ClInclude Include="scene.h">
       <Filter>Objects</Filter>
     </ClInclude>
-    <ClInclude Include="physics.h">
-      <Filter>Systems</Filter>
-    </ClInclude>
     <ClInclude Include="physicsComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -109,6 +112,24 @@
     </ClInclude>
     <ClInclude Include="fileSystem.h">
       <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="collisionComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="aabb.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="physics.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="aabbComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="event.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="evenManager.h">
+      <Filter>Event</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -178,9 +199,6 @@
     <ClCompile Include="controllerComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="physics.cpp">
-      <Filter>Systems</Filter>
-    </ClCompile>
     <ClCompile Include="kinematicComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -189,6 +207,18 @@
     </ClCompile>
     <ClCompile Include="fileSystem.cpp">
       <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="aabb.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="physics.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="aabbComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="evenManager.cpp">
+      <Filter>Event</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -5,21 +5,25 @@
 #include "enemyControllerComponent.h"
 #include "renderer.h"
 #include "timer.h"
+#include "aabbComponent.h"
 
 void Enemy::Create(const Vector2D & position, float movementTimer)
 {
-	m_movementTimer = movementTimer;
 	m_transform.position = position;
 	m_transform.scale = Vector2D(2.0f, 2.0f);
+	SetTag("enemy");
 
 	KinematicComponent* kinematic = AddComponent<KinematicComponent>();
-	kinematic->Create(500.0f, 0.3f);
-
-	EnemyControllerComponent* enemyControllerComponent = AddComponent<EnemyControllerComponent>();
-	enemyControllerComponent->Create(200.0f);
-
+	kinematic->Create(500.0f, 0.1f);
+	
 	SpriteComponent* spriteComponent = AddComponent<SpriteComponent>();
 	spriteComponent->Create("enemy01A.png", Vector2D(0.5f, 0.5f));
+
+	EnemyControllerComponent* enemyControllerComponent = AddComponent<EnemyControllerComponent>();
+	enemyControllerComponent->Create(100.0f);
+
+	AABBComponent* aabbComponent = AddComponent<AABBComponent>();
+	aabbComponent->Create();
 }
 
 void Enemy::Update()
@@ -33,22 +37,20 @@ void Enemy::Update()
 		float y = -100.0f;
 		m_transform.position = Vector2D(x, y);
 	}
-
-	/*KinematicComponent* kinematic = this->GetComponent<KinematicComponent>();
-	if (kinematic)
-	{
-		kinematic->ApplyForce(m_force * m_speed, KinematicComponent::VELOCITY);
-	}
-
-	m_movementTimer -= Timer::Instance()->DeltaTime();
-	if (m_movementTimer <= 0.0f)
-	{
-		m_transform.position.y += 40.0f;
-		m_movementTimer = 3.0f;
-	}*/
 }
 
-void Enemy::Destroy()
+void Enemy::OnEvent(const Event & event)
 {
-
+	if (event.eventID == "collision")
+	{
+		if (event.sender->GetTag() == "playermissile")
+		{
+			SetState(Entity::DESTROY);
+		}
+		
+		if (event.sender->GetTag() == "player")
+		{
+			SetState(Entity::DESTROY);
+		}
+	}
 }

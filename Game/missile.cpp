@@ -1,12 +1,12 @@
 #include "missile.h"
-#include "transform.h"
 #include "kinematicComponent.h"
+#include "aabbComponent.h"
 #include "spriteComponent.h"
 #include "timer.h"
 
 void Missile::Create(const Vector2D & position, const Vector2D& direction, float speed)
 {
-	m_lifetime = 2.0f;
+	m_lifetime = 5.5f;
 	SetTag("playermissile");
 
 	m_transform.position = position;
@@ -18,6 +18,9 @@ void Missile::Create(const Vector2D & position, const Vector2D& direction, float
 
 	SpriteComponent* spriteComponent = AddComponent<SpriteComponent>();
 	spriteComponent->Create("missile01.png", Vector2D(0.5f, 0.5f));
+
+	AABBComponent* aabbComponent = AddComponent<AABBComponent>();
+	aabbComponent->Create();
 }
 
 void Missile::Update()
@@ -27,5 +30,16 @@ void Missile::Update()
 	if (m_lifetime <= 0.0f)
 	{
 		SetState(Entity::DESTROY);
+	}
+}
+
+void Missile::OnEvent(const Event & event)
+{
+	if (event.eventID == "collision")
+	{
+		if (event.sender->GetTag() == "enemy")
+		{
+			SetState(Entity::DESTROY);
+		}
 	}
 }
