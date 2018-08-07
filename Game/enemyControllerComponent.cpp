@@ -12,6 +12,8 @@
 void EnemyControllerComponent::Create(float speed)
 {
 	m_speed = speed;
+	m_fireRate = Math::GetRandomRange(m_fireRateMin, m_fireRateMax);
+	m_timer = m_fireRate;
 }
 
 void EnemyControllerComponent::Destroy()
@@ -35,5 +37,15 @@ void EnemyControllerComponent::Update()
 	if (kinematic)
 	{
 		kinematic->ApplyForce(force * m_speed, KinematicComponent::VELOCITY);
+	}	
+
+	float dt = Timer::Instance()->DeltaTime();
+	m_timer -= dt;
+	if (m_timer <= 0.0f)
+	{
+		Missile* missile = new Missile(m_owner->GetScene());
+		missile->Create("enemymissile", m_owner->GetTransform().position, Vector2D::up, 800.0f);
+		m_owner->GetScene()->AddEntity(missile);
+		m_timer = m_fireRate;
 	}
 }

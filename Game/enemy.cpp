@@ -4,6 +4,7 @@
 #include "spriteComponent.h"
 #include "enemyControllerComponent.h"
 #include "renderer.h"
+#include "missile.h"
 #include "timer.h"
 #include "aabbComponent.h"
 

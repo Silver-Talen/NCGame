@@ -43,7 +43,6 @@ void Engine::Shutdown()
 void Engine::Update()
 {
 	Timer::Instance()->Update();
-	//Timer::Instance()->SetTimeScale(5.0f);
 	Physics::Instance()->Update();
 	InputManager::Instance()->Update();
 	AudioSystem::Instance()->Update();

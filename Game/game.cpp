@@ -26,7 +26,8 @@ bool Game::Initialize()
 	for (size_t i = 0; i < 10; i++)
 	{
 		Enemy* enemy = new Enemy(m_scene);
-		enemy->Create(Vector2D(400.0f, 25.0f), 3.0f);
+		float x = Math::GetRandomRange(25.0f, Renderer::Instance()->GetSize().x - 25.0f);
+		enemy->Create(Vector2D(x, 0.0f), 3.0f);
 		m_scene->AddEntity(enemy);
 	}
 	
