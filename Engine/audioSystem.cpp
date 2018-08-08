@@ -38,7 +38,7 @@ void AudioSystem::AddSound(const std::string & id, const std::string & audioname
 
 	FMOD::Sound* sound = nullptr;
 
-	std::string filename = FileSystem::Instance()->GetPathname() + audioname;
+	std::string filename = FileSystem::Instance()->GetPathName() + audioname;
 	FMOD_RESULT result =  m_fmodSystem->createSound(filename.c_str(), FMOD_DEFAULT, 0, &sound);
 	if (result == FMOD_OK)
 	{

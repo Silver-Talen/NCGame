@@ -1,6 +1,7 @@
 #include "scene.h"
 #include "entity.h"
 #include "collisionComponent.h"
+#include "renderComponent.h"
 #include "evenManager.h"
 #include <assert.h>
 #include <algorithm>
@@ -72,9 +73,24 @@ void Scene::Update()
 
 void Scene::Draw()
 {
+	std::vector<IRenderComponent*> renderComponents;
 	for (Entity* entity : m_entities)
 	{
-		entity->Draw();
+		IRenderComponent* renderComponent = entity->GetComponent<IRenderComponent>();
+		if (renderComponent)
+		{
+			renderComponents.push_back(renderComponent);
+		}
+	}
+
+	std::sort(renderComponents.begin(), renderComponents.end(), IRenderComponent::CompareDepth);
+
+	for (IRenderComponent* renderComponent : renderComponents)
+	{
+		if (renderComponent->IsVisible())
+		{
+			renderComponent->Draw();
+		}
 	}
 }
 

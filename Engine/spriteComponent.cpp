@@ -22,6 +22,8 @@ void SpriteComponent::Update()
 
 void SpriteComponent::Draw()
 {
+
 	Transform transform = m_owner->GetTransform();
 	m_texture->Draw(transform.position, m_origin, transform.scale, transform.rotation);
+	
 }

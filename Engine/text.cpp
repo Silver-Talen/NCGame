@@ -1,27 +1,39 @@
 #include "text.h"
 #include "renderer.h"
-
-Text::Text(const std::string & text, const std::string & fontName, int fontSize, const Color & color)
-{
-	m_text = text;
-	m_color = color;
-	m_font = TTF_OpenFont(fontName.c_str(), fontSize);
-
-	Create();
-}
+#include "texture.h"
+#include "fileSystem.h"
 
 Text::~Text()
 {
-	SDL_DestroyTexture(m_texture);
+	m_texture->Destroy();
 	TTF_CloseFont(m_font);
 }
 
-void Text::Draw(const Vector2D & position, float angle)
+void Text::Create(const std::string & text, const std::string & fontName, int fontSize, const Color & color)
 {
-	if (m_texture)
-	{
-		Renderer::Instance()->DrawTexture(m_texture, position, angle);
-	}
+	m_texture = new Texture();
+
+	m_text = text;
+	m_color = color;
+
+	std::string fileName = FileSystem::Instance()->GetPathName() + fontName;
+	m_font = TTF_OpenFont(fileName.c_str(), fontSize);
+
+	CreateTexture();
+
+}
+
+//void Text::Draw(const Vector2D & position, float angle)
+//{
+//	if (m_texture)
+//	{
+//		Renderer::Instance()->DrawTexture(m_texture, position, angle);
+//	}
+//}
+
+void Text::Draw(const Vector2D & position, const Vector2D & origin, const Vector2D & scale, float angle)
+{
+	m_texture->Draw(position, origin, scale, angle);
 }
 
 void Text::SetText(const std::string & text)
@@ -29,7 +41,7 @@ void Text::SetText(const std::string & text)
 	if (m_text != text)
 	{
 		m_text = text;
-		Create();
+		CreateTexture();
 	}
 }
 
@@ -40,7 +52,7 @@ void Text::SetText(const std::string & text, const Color & color)
 		m_text = text;
 		m_color = color;
 
-		Create();
+		CreateTexture();
 	}
 }
 
@@ -50,22 +62,22 @@ void Text::SetColor(const Color & color)
 	{
 		m_color = color;
 
-		Create();
+		CreateTexture();
 	}
 }
 
-void Text::Create()
+void Text::CreateTexture()
 {
 	assert(m_font);
 
 	//destroy current textrue if on exists
 	if (m_texture)
 	{
-		SDL_DestroyTexture(m_texture);
+		m_texture->Destroy();
 	}
 
 	SDL_Surface* surface = TTF_RenderText_Solid(m_font, m_text.c_str(), m_color);
 	assert(surface);
-	m_texture = SDL_CreateTextureFromSurface(Renderer::Instance()->GetRenderer(), surface);
+	m_texture->CreateFromSurface(surface);
 	SDL_FreeSurface(surface);
 }

@@ -10,10 +10,10 @@ public:
 	void Shutdown();
 	void Update();
 
-	void SetPathname(const std::string& pathname) { m_pathname = pathname; }
-	const std::string GetPathname() { return m_pathname; }
+	void SetPathname(const std::string& pathName) { m_pathName = pathName; }
+	const std::string GetPathName() { return m_pathName; }
 
 protected:
 	Engine * m_engine;
-	std::string m_pathname;
+	std::string m_pathName;
 };

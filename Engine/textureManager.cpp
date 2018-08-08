@@ -25,7 +25,7 @@ SDL_Texture * TextureManager::GetTexture(const std::string & textureName)
 
 	if (texture == nullptr)
 	{
-		std::string filename = FileSystem::Instance()->GetPathname() + textureName;
+		std::string filename = FileSystem::Instance()->GetPathName() + textureName;
 		SDL_Surface* surface = IMG_Load(filename.c_str());
 		assert(surface);
 		texture = SDL_CreateTextureFromSurface(Renderer::Instance()->GetRenderer(), surface);
