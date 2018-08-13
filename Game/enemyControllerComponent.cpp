@@ -25,7 +25,7 @@ void EnemyControllerComponent::Update()
 {
 	Vector2D force = Vector2D::up;
 
-	Entity* player = m_owner->GetScene()->FindEntity("player");
+	Entity* player = m_owner->GetScene()->GetEntityWithID("player");
 	if (player)
 	{
 		float dx = player->GetTransform().position.x - m_owner->GetTransform().position.x;

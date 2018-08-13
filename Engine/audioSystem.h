@@ -14,7 +14,7 @@ public:
 	void Update();
 
 	void AddSound(const std::string& id, const std::string& audioname); 
-	void PlaySound(const std::string& id, bool loop); 
+	void PlaySound(const std::string& id, bool loop = false); 
 	void RemoveSound(const std::string& id);
 
 public:

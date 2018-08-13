@@ -4,6 +4,7 @@
 #include "id.h"
 #include <list>
 #include <vector>
+#include <assert.h>
 
 class Entity;
 
@@ -18,10 +19,20 @@ public:
 	void Update();
 	void Draw();
 
+	template <typename T>
+	T* AddEntity(const ID& id  = ID())
+	{
+		T* entity = new T(this, id);
+		assert(dynamic_cast<Entity*>(entity));
+		m_entities.push_back(entity);
+
+		return entity;
+	}
+
 	void AddEntity(Entity* entity);
 	std::list<Entity*>::iterator RemoveEntity(Entity* entity, bool destroy = true);
 
-	Entity* FindEntity(const ID& id);
+	Entity* GetEntityWithID(const ID& id);
 	std::vector<Entity*> GetEntitiesWithTag(const ID& tag);
 
 protected:

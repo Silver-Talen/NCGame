@@ -9,7 +9,7 @@ public:
 	AABBComponent(Entity* parent) : ICollisionComponent(parent) {}
 	~AABBComponent() {}
 
-	void Create();
+	void Create(const Vector2D& offset = Vector2D::one);
 	void Destroy();
 	void Update();
 
@@ -17,5 +17,6 @@ public:
 
 protected:
 	AABB m_aabb;
+	Vector2D m_offset;
 };
 

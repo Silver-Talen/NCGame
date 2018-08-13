@@ -34,15 +34,16 @@ void AudioSystem::Update()
 
 void AudioSystem::AddSound(const std::string & id, const std::string & audioname)
 {
-	assert(m_sounds.find(id) == m_sounds.end());
-
-	FMOD::Sound* sound = nullptr;
-
-	std::string filename = FileSystem::Instance()->GetPathName() + audioname;
-	FMOD_RESULT result =  m_fmodSystem->createSound(filename.c_str(), FMOD_DEFAULT, 0, &sound);
-	if (result == FMOD_OK)
+	if(m_sounds.find(id) == m_sounds.end());
 	{
-		m_sounds[id] = sound;
+		FMOD::Sound* sound = nullptr;
+
+		std::string filename = FileSystem::Instance()->GetPathName() + audioname;
+		FMOD_RESULT result =  m_fmodSystem->createSound(filename.c_str(), FMOD_DEFAULT, 0, &sound);
+		if (result == FMOD_OK)
+		{
+			m_sounds[id] = sound;
+		}
 	}
 }
 

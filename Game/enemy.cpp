@@ -1,12 +1,12 @@
 #include "enemy.h"
-#include "transform.h"
 #include "kinematicComponent.h"
 #include "spriteComponent.h"
 #include "enemyControllerComponent.h"
+#include "enemyExplosion.h"
 #include "renderer.h"
-#include "missile.h"
-#include "timer.h"
 #include "aabbComponent.h"
+#include "audioSystem.h"
+#include "eventManager.h"
 
 void Enemy::Create(const Vector2D & position, float movementTimer)
 {
@@ -24,7 +24,7 @@ void Enemy::Create(const Vector2D & position, float movementTimer)
 	enemyControllerComponent->Create(100.0f);
 
 	AABBComponent* aabbComponent = AddComponent<AABBComponent>();
-	aabbComponent->Create();
+	aabbComponent->Create(Vector2D(0.7f, 0.9f));
 }
 
 void Enemy::Update()
@@ -46,6 +46,13 @@ void Enemy::OnEvent(const Event & event)
 	{
 		if (event.sender->GetTag() == "playermissile")
 		{
+  			Event _event;
+			_event.eventID = "add_score";
+			EventManager::Instance()->SendGameMessage(_event);
+
+			EnemyExplosion* explosion = m_scene->AddEntity<EnemyExplosion>();
+			explosion->Create(m_transform.position);
+
 			SetState(Entity::DESTROY);
 		}
 		

@@ -2,7 +2,7 @@
 #include "entity.h"
 #include "collisionComponent.h"
 #include "renderComponent.h"
-#include "evenManager.h"
+#include "eventManager.h"
 #include <assert.h>
 #include <algorithm>
 
@@ -48,11 +48,11 @@ void Scene::Update()
 
 				event.reciever = collisionComponents[i]->GetOwner();
 				event.sender = collisionComponents[j]->GetOwner();
-				EvenManager::Instance()->SendMessage(event);
+				EventManager::Instance()->SendMessage(event);
 				
 				event.reciever = collisionComponents[j]->GetOwner();
 				event.sender = collisionComponents[i]->GetOwner();
-				EvenManager::Instance()->SendMessage(event);
+				EventManager::Instance()->SendMessage(event);
 			}
 		}
 	}
@@ -119,7 +119,7 @@ std::list<Entity*>::iterator Scene::RemoveEntity(Entity * entity, bool destroy)
 	return iter;
 }
 
-Entity * Scene::FindEntity(const ID & id)
+Entity * Scene::GetEntityWithID(const ID & id)
 {
 	Entity* entity = nullptr;
 	for (Entity* _entity : m_entities)

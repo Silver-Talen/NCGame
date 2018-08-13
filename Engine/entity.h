@@ -1,6 +1,7 @@
 #pragma once
 
 #include "object.h"
+#include "eventReceiver.h"
 #include "component.h"
 #include "transform.h"
 #include "scene.h"
@@ -8,7 +9,7 @@
 #include <vector>
 #include <assert.h>
 
-class ENGINE_API Entity : public Object
+class ENGINE_API Entity : public Object, public EventReceiver
 {
 public:
 	enum eState

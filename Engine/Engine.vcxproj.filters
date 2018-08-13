@@ -128,10 +128,16 @@
     <ClInclude Include="event.h">
       <Filter>Event</Filter>
     </ClInclude>
-    <ClInclude Include="evenManager.h">
+    <ClInclude Include="textComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="eventReceiver.h">
       <Filter>Event</Filter>
     </ClInclude>
-    <ClInclude Include="textComponent.h">
+    <ClInclude Include="eventManager.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="animationComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
@@ -220,10 +226,13 @@
     <ClCompile Include="aabbComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="evenManager.cpp">
+    <ClCompile Include="textComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="eventManager.cpp">
       <Filter>Event</Filter>
     </ClCompile>
-    <ClCompile Include="textComponent.cpp">
+    <ClCompile Include="animationComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>

@@ -16,27 +16,26 @@ Texture::~Texture()
 bool Texture::Create(const std::string& textureName)
 {
 	m_sdlTexture = TextureManager::Instance()->GetTexture(textureName);
-	/*SDL_Surface* surface = IMG_Load(textureName.c_str());
-	assert(surface);
-	m_sdlTexture = SDL_CreateTextureFromSurface(Renderer::Instance()->GetRenderer(), surface);
-	SDL_FreeSurface(surface);*/
+	assert(m_sdlTexture);
 
-	return true;
+	return (m_sdlTexture != nullptr);
 }
 
 bool Texture::CreateFromSurface(SDL_Surface * surface)
 {
 	m_sdlTexture = SDL_CreateTextureFromSurface(Renderer::Instance()->GetRenderer(), surface);
-	return true;
+	assert(m_sdlTexture);
+
+	return (m_sdlTexture != nullptr);
 }
 
 void Texture::Destroy()
 {
-	if (m_sdlTexture)
+	/*if (m_sdlTexture)
 	{
 		SDL_DestroyTexture(m_sdlTexture);
 		m_sdlTexture = nullptr;
-	}
+	}*/
 }
 
 void Texture::Draw(const Vector2D & position, const Vector2D & origin, const Vector2D & scale, float angle)

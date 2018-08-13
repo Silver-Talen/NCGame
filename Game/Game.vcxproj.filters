@@ -34,6 +34,9 @@
     <ClCompile Include="enemy.cpp">
       <Filter>Objects</Filter>
     </ClCompile>
+    <ClCompile Include="enemyExplosion.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -52,6 +55,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="enemy.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="enemyExplosion.h">
       <Filter>Objects</Filter>
     </ClInclude>
   </ItemGroup>

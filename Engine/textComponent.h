@@ -19,6 +19,9 @@ public:
 
 	void Draw();
 
+	void SetText(const std::string& text);
+	void SetColor(const Color& color);
+
 protected:
 	Text * m_text = nullptr;
 	Vector2D m_origin;
