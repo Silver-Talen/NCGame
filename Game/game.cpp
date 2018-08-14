@@ -5,6 +5,8 @@
 #include "textureManager.h"
 #include "renderer.h"
 #include "entity.h"
+#include "stateMachine.h"
+#include "states.h"
 #include "spriteComponent.h"
 #include "animationComponent.h"
 #include "textComponent.h"
@@ -26,7 +28,12 @@ bool Game::Initialize()
 	EventManager::Instance()->SetGameEventReceiver(this);
 
 	m_scene = new Scene();
+	m_stateMachine = new StateMachine(m_scene);
 
+	m_stateMachine->AddState("title", new TitleState(m_stateMachine));
+	m_stateMachine->AddState("game", new GameState(m_stateMachine));
+
+	m_stateMachine->SetState("title");
 	
 	Entity* entity = new Entity(m_scene, "score");
 	entity->GetTransform().position = Vector2D(20.0f, 20.0f);
@@ -34,26 +41,6 @@ bool Game::Initialize()
 	textComponent->Create("00000", "emulogic.ttf", 18, Color::white);
 	textComponent->SetDepth(100);
 	m_scene->AddEntity(entity);
-	
-	/*Entity* entity = new Entity(m_scene);
-	entity->GetTransform().position = Vector2D(400.0f, 300.0f);
-	SpriteComponent* spriteComponent = entity->AddComponent<SpriteComponent>();
-	spriteComponent->Create("galaga.png", Vector2D(0.5f, 0.5f));
-	spriteComponent->SetDepth(100);
-	m_scene->AddEntity(entity);*/
-
-	Ship* ship = new Ship(m_scene, "player");
-	ship->Create(Vector2D(400.0f, 550.0f));
-	m_scene->AddEntity(ship);
-		
-	for (size_t i = 0; i < 10; i++)
-	{
-		Enemy* enemy = new Enemy(m_scene);
-		float x = Math::GetRandomRange(25.0f, Renderer::Instance()->GetSize().x - 25.0f);
-		float y = Math::GetRandomRange(-225.0f, -Renderer::Instance()->GetSize().y);
-		enemy->Create(Vector2D(x, y), 3.0f);
-		m_scene->AddEntity(enemy);
-	}
 
 	m_running = success;
 
@@ -86,6 +73,8 @@ void Game::Update()
 		while (score.length() < 5) score = "0" + score;
 		textComponent->SetText(score);
 	}
+
+	m_stateMachine->Update();
 
 	Renderer::Instance()->BeginFrame();
 

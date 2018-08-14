@@ -4,6 +4,7 @@
 
 class Engine;
 class Scene;
+class StateMachine;
 
 class Game : public EventReceiver
 {
@@ -25,4 +26,5 @@ protected:
 	bool m_running = false;
 	Engine* m_engine = nullptr;
 	Scene* m_scene = nullptr;
+	StateMachine* m_stateMachine = nullptr;
 };
