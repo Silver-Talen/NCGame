@@ -64,4 +64,9 @@ void Engine::Update()
 	}
 
 	SDL_PumpEvents();
+
+	if (InputManager::Instance()->GetButtonState(SDL_SCANCODE_GRAVE) == InputManager::eButtonState::PRESSED)
+	{
+		m_isDebug = !m_isDebug;
+	}
 }

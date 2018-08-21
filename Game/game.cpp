@@ -56,7 +56,8 @@ void Game::OnEvent(const Event & event)
 {
 	if (event.eventID == "add_score")
 	{
-		m_score += 100;
+		m_score += event.variants[0].asInteger;
+
 	}
 }
 

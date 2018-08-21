@@ -26,9 +26,10 @@ public:
 	SDL_Window* GetWindow() { return m_window; }
 
 	bool IsQuit() { return m_isQuit; }
+	bool IsDebug() { return m_isDebug; }
 
 protected:
 	bool m_isQuit = false;
+	bool m_isDebug = true;
 	SDL_Window * m_window = nullptr;
-	
 };

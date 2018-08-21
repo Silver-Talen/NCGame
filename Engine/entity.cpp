@@ -1,5 +1,6 @@
 #include "entity.h"
 #include "renderComponent.h"
+#include "collisionComponent.h"
 #include <assert.h>
 #include <algorithm>
 
@@ -32,6 +33,21 @@ void Entity::Destroy()
 
 void Entity::OnEvent(const Event & event)
 {
+}
+
+bool Entity::Intersects(Entity * otherEntity)
+{
+	bool intersects = false;
+
+	ICollisionComponent* collisionA = GetComponent<ICollisionComponent>();
+	ICollisionComponent* collisionB = otherEntity->GetComponent<ICollisionComponent>();
+
+	if (collisionA && collisionB)
+	{
+		intersects = collisionA->Intersects(collisionB);
+	}
+
+	return intersects;
 }
 
 void Entity::AddComponent(Component * component)

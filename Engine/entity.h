@@ -32,6 +32,8 @@ public:
 	Scene* GetScene() { return m_scene; }
 	Transform& GetTransform() { return m_transform; }
 
+	bool Intersects(Entity* otherEntity);
+
 	void SetState(eState state) { m_state = state; }
 	eState GetState() { return m_state; }
 

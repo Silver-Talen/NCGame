@@ -149,6 +149,15 @@
     <ClInclude Include="stateMachine.h">
       <Filter>Framework</Filter>
     </ClInclude>
+    <ClInclude Include="variant.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="waypoint.h">
+      <Filter>Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="debugDraw.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="engine.cpp">
@@ -250,5 +259,14 @@
     <ClCompile Include="stateMachine.cpp">
       <Filter>Framework</Filter>
     </ClCompile>
+    <ClCompile Include="waypoint.cpp">
+      <Filter>Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="debugDraw.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

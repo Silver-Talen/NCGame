@@ -143,6 +143,7 @@
     <ClInclude Include="color.h" />
     <ClInclude Include="component.h" />
     <ClInclude Include="controllerComponent.h" />
+    <ClInclude Include="debugDraw.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="entity.h" />
     <ClInclude Include="eventManager.h" />
@@ -163,6 +164,8 @@
     <ClInclude Include="textComponent.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="transform.h" />
+    <ClInclude Include="variant.h" />
+    <ClInclude Include="waypoint.h" />
     <ClInclude Include="_math.h" />
     <ClInclude Include="matrix22.h" />
     <ClInclude Include="matrix33.h" />
@@ -183,6 +186,7 @@
     <ClCompile Include="color.cpp" />
     <ClCompile Include="component.cpp" />
     <ClCompile Include="controllerComponent.cpp" />
+    <ClCompile Include="debugDraw.cpp" />
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="entity.cpp" />
     <ClCompile Include="eventManager.cpp" />
@@ -199,6 +203,7 @@
     <ClCompile Include="textComponent.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="transform.cpp" />
+    <ClCompile Include="waypoint.cpp" />
     <ClCompile Include="_math.cpp" />
     <ClCompile Include="matrix22.cpp" />
     <ClCompile Include="matrix33.cpp" />
@@ -209,6 +214,9 @@
     <ClCompile Include="timer.cpp" />
     <ClCompile Include="vector2D.cpp" />
     <ClCompile Include="vector3D.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

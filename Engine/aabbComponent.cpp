@@ -3,6 +3,7 @@
 #include "transform.h"
 #include "entity.h"
 #include "texture.h"
+#include "debugDraw.h"
 
 void AABBComponent::Create(const Vector2D& offset)
 {
@@ -27,9 +28,9 @@ void AABBComponent::Update()
 	}
 
 	m_aabb.Build(position, size * 0.5f);
-#ifdef _DEBUG
-	m_aabb.Draw(Color::red);
-#endif
+
+
+	 DEBUG_DRAW_AABB(m_aabb, Color::red)
 }
 
 bool AABBComponent::Intersects(ICollisionComponent * other)

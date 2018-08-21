@@ -34,7 +34,7 @@ void AudioSystem::Update()
 
 void AudioSystem::AddSound(const std::string & id, const std::string & audioname)
 {
-	if(m_sounds.find(id) == m_sounds.end());
+	if(m_sounds.find(id) == m_sounds.end())
 	{
 		FMOD::Sound* sound = nullptr;
 
