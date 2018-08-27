@@ -1,5 +1,6 @@
 #include "stateMachine.h"
 #include "state.h"
+#include <algorithm>
 #include <assert.h>
 
 void StateMachine::Update()
@@ -23,10 +24,7 @@ void StateMachine::SetState(const std::string & stateName)
 		IState* newState = m_states[stateName];
 		if (newState != m_state)
 		{
-			if (m_state)
-			{
-				m_state->Exit();
-			}
+			if (m_state) m_state->Exit();
 			m_state = newState;
 			newState->Enter();
 			m_state->Update();

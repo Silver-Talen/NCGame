@@ -3,11 +3,11 @@
 #include "entity.h"
 #include "vector2D.h"
 
-class EnemyExplosion : public Entity
+class Explosion : public Entity
 {
 public:
-	EnemyExplosion(Scene* scene, const ID& id) : Entity(scene, id) {}
-	~EnemyExplosion() {}
+	Explosion(Scene* scene, const ID& id) : Entity(scene, id) {}
+	~Explosion() {}
 
 	void Create(const Vector2D& position);
 	void Update();

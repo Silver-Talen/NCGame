@@ -2,7 +2,7 @@
 #include "kinematicComponent.h"
 #include "spriteComponent.h"
 #include "shipControllerComponent.h"
-#include "shipExplosion.h"
+#include "explosion.h"
 #include "renderer.h"
 #include "aabbComponent.h"
 #include "eventManager.h"
@@ -49,7 +49,7 @@ void Ship::OnEvent(const Event & event)
 	{
 		if (event.sender->GetTag() == "enemymissile")
 		{
-			ShipExplosion* explosion = m_scene->AddEntity<ShipExplosion>();
+			Explosion* explosion = m_scene->AddEntity<Explosion>();
 			explosion->Create(m_transform.position);
 
 			SetState(Entity::DESTROY);

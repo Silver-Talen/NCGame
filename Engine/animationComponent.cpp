@@ -37,7 +37,7 @@ void AnimationComponent::Update()
 		m_timer -= m_rate;
 		m_frame += m_direction;
 
-		if (m_frame >= m_textures.size() || m_frame < 0)
+		if (m_frame >= (int)m_textures.size() || m_frame < 0)
 		{
 			switch (m_playback)
 			{

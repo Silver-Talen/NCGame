@@ -15,11 +15,6 @@
 #include "fileSystem.h"
 #include "eventManager.h"
 
-//Vector2D position(400.0f, 300.0f);
-//Vector2D scalar(5.0f, 5.0f);
-//float angle = 0.0f;
-//Text* text;
-
 bool Game::Initialize()
 {
 	bool success = m_engine->Initialize();
@@ -32,7 +27,6 @@ bool Game::Initialize()
 
 	m_stateMachine->AddState("title", new TitleState(m_stateMachine));
 	m_stateMachine->AddState("game", new GameState(m_stateMachine));
-
 	m_stateMachine->SetState("title");
 	
 	Entity* entity = new Entity(m_scene, "score");
@@ -42,14 +36,20 @@ bool Game::Initialize()
 	textComponent->SetDepth(100);
 	m_scene->AddEntity(entity);
 
+	Ship* ship = new Ship(m_scene, "player");
+	ship->Create(Vector2D(400.0f, 500.0f));
+	m_scene->AddEntity(ship);
+
 	m_running = success;
 
 	return success;
 }
 
-void Game::Shutdown()
+bool Game::Shutdown()
 {
 	m_engine->Shutdown();
+
+	return true;
 }
 
 void Game::OnEvent(const Event & event)
@@ -61,7 +61,7 @@ void Game::OnEvent(const Event & event)
 	}
 }
 
-void Game::Update()
+bool Game::Update()
 {
 	m_running = !m_engine->IsQuit();
 	m_engine->Update();
@@ -84,4 +84,6 @@ void Game::Update()
 	m_scene->Draw();
 
 	Renderer::Instance()->EndFrame();
+
+	return true;
 }

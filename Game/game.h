@@ -13,8 +13,8 @@ public:
 	~Game() {}
 
 	bool Initialize();
-	void Update();
-	void Shutdown();
+	bool Update();
+	bool Shutdown();
 
 	void OnEvent(const Event& event);
 

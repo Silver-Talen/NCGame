@@ -1,4 +1,5 @@
 #include "timer.h"
+#include <algorithm>
 
 bool Timer::Initialize(Engine * engine)
 {
@@ -20,4 +21,5 @@ void Timer::Update()
 	Uint32 milliseconds = ticks - m_prevTicks;
 	m_prevTicks = ticks;
 	m_dt = (m_paused) ? 0.0f : milliseconds / 1000.0f;
+	m_dt = std::min<float>(m_dt, 1.0f);
 }

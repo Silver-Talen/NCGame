@@ -164,8 +164,10 @@
     <ClInclude Include="textComponent.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="transform.h" />
+    <ClInclude Include="transformControllerComponent.h" />
     <ClInclude Include="variant.h" />
     <ClInclude Include="waypoint.h" />
+    <ClInclude Include="waypointControllerComponent.h" />
     <ClInclude Include="_math.h" />
     <ClInclude Include="matrix22.h" />
     <ClInclude Include="matrix33.h" />
@@ -203,7 +205,9 @@
     <ClCompile Include="textComponent.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="transform.cpp" />
+    <ClCompile Include="transformControllerComponent.cpp" />
     <ClCompile Include="waypoint.cpp" />
+    <ClCompile Include="waypointControllerComponent.cpp" />
     <ClCompile Include="_math.cpp" />
     <ClCompile Include="matrix22.cpp" />
     <ClCompile Include="matrix33.cpp" />

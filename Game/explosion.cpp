@@ -1,10 +1,10 @@
-#include "enemyExplosion.h"
+#include "explosion.h"
 #include "spriteComponent.h"
 #include "animationComponent.h"
 #include "audioSystem.h"
 
 
-void EnemyExplosion::Create(const Vector2D & position)
+void Explosion::Create(const Vector2D & position)
 {
 	m_transform.position = position;
 	m_transform.scale = Vector2D(2.0f, 2.0f);
@@ -18,7 +18,7 @@ void EnemyExplosion::Create(const Vector2D & position)
 	AudioSystem::Instance()->PlaySound("explosion");
 }
 
-void EnemyExplosion::Update()
+void Explosion::Update()
 {
 	Entity::Update();
 }

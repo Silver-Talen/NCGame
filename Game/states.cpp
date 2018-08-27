@@ -1,11 +1,9 @@
 #include "states.h"
 #include "entity.h"
-#include "spriteComponent.h"
 #include "stateMachine.h"
+#include "spriteComponent.h"
 #include "inputManager.h"
 #include "enemy.h"
-#include "ship.h"
-#include "renderer.h"
 
 void TitleState::Enter()
 {
@@ -22,7 +20,7 @@ void TitleState::Enter()
 
 void TitleState::Update()
 {
-	if (InputManager::Instance()->GetActionButton("start") == InputManager::eButtonState::PRESSED)
+	//if (InputManager::Instance()->GetActionButton("start") == InputManager::eButtonState::PRESSED)
 	{
 		m_owner->SetState("game");
 	}
@@ -39,17 +37,18 @@ void TitleState::Exit()
 
 void GameState::Enter()
 {
-	Ship* ship = new Ship(m_owner->GetScene(), "player");
-	ship->Create(Vector2D(400.0f, 550.0f));
-	m_owner->GetScene()->AddEntity(ship);
+	std::vector<Enemy::Info> formation =
+	{ { Enemy::BEE, Enemy::LEFT, 400.0f, Vector2D(100.0f, 100.0f)}, 
+	  { Enemy::BEE, Enemy::LEFT, 400.0f, Vector2D(140.0f, 100.0f)}, 
+	  { Enemy::BOSS, Enemy::LEFT, 400.0f, Vector2D(180.0f, 100.0f)}, 
+	  { Enemy::BEE, Enemy::RIGHT, 400.0f, Vector2D(700.0f, 100.0f)}, 
+	  { Enemy::BOSS, Enemy::RIGHT, 400.0f, Vector2D(660.0f, 100.0f)}, 
+	};
 
-	for (size_t i = 0; i < 10; i++)
+	for (Enemy::Info info : formation)
 	{
-		Enemy* enemy = new Enemy(m_owner->GetScene());
-		float x = Math::GetRandomRange(25.0f, Renderer::Instance()->GetSize().x - 25.0f);
-		float y = Math::GetRandomRange(-225.0f, -Renderer::Instance()->GetSize().y);
-		enemy->Create(Vector2D(x, y), 3.0f);
-		m_owner->GetScene()->AddEntity(enemy);
+		Enemy* enemy = m_owner->GetScene()->AddEntity<Enemy>();
+		enemy->Create(info);
 	}
 }
 
