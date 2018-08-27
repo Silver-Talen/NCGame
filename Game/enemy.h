@@ -26,6 +26,7 @@ public:
 		eSide side;
 		float speed;
 		Vector2D target;
+		class Formation* formation;
 	};
 
 public:

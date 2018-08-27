@@ -71,7 +71,7 @@ void Enemy::OnEvent(const Event & event)
 			EventManager::Instance()->SendGameMessage(_event);
 
 			Explosion* explosion = m_scene->AddEntity<Explosion>();
-			explosion->Create(m_transform.position);
+			explosion->Create(m_transform.position, Explosion::ENEMY);
 			SetState(Entity::DESTROY);
 		}
 		

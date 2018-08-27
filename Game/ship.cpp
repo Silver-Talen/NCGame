@@ -50,7 +50,7 @@ void Ship::OnEvent(const Event & event)
 		if (event.sender->GetTag() == "enemymissile")
 		{
 			Explosion* explosion = m_scene->AddEntity<Explosion>();
-			explosion->Create(m_transform.position);
+			explosion->Create(m_transform.position, Explosion::PLAYER);
 
 			SetState(Entity::DESTROY);
 		}
