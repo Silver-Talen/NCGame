@@ -3,7 +3,10 @@
 #include "stateMachine.h"
 #include "spriteComponent.h"
 #include "inputManager.h"
+#include "formation.h"
 #include "enemy.h"
+#include "timer.h"
+#include "ship.h"
 
 void TitleState::Enter()
 {
@@ -20,9 +23,9 @@ void TitleState::Enter()
 
 void TitleState::Update()
 {
-	//if (InputManager::Instance()->GetActionButton("start") == InputManager::eButtonState::PRESSED)
+	if (InputManager::Instance()->GetActionButton("start"))
 	{
-		m_owner->SetState("game");
+		m_owner->SetState("enter_stage");
 	}
 }
 
@@ -35,26 +38,47 @@ void TitleState::Exit()
 	}
 }
 
-void GameState::Enter()
+void EnterStageState::Enter()
 {
-	std::vector<Enemy::Info> formation =
-	{ { Enemy::BEE, Enemy::LEFT, 400.0f, Vector2D(100.0f, 100.0f)}, 
-	  { Enemy::BEE, Enemy::LEFT, 400.0f, Vector2D(140.0f, 100.0f)}, 
-	  { Enemy::BOSS, Enemy::LEFT, 400.0f, Vector2D(180.0f, 100.0f)}, 
-	  { Enemy::BEE, Enemy::RIGHT, 400.0f, Vector2D(700.0f, 100.0f)}, 
-	  { Enemy::BOSS, Enemy::RIGHT, 400.0f, Vector2D(660.0f, 100.0f)}, 
-	};
-
-	for (Enemy::Info info : formation)
+	Timer::Instance()->Reset();
+	Formation* formation = dynamic_cast<Formation*>(m_owner->GetScene()->GetEntityWithID("formation"));
+	if (formation == nullptr)
 	{
-		Enemy* enemy = m_owner->GetScene()->AddEntity<Enemy>();
-		enemy->Create(info);
+		formation = m_owner->GetScene()->AddEntity<Formation>("formation");
+		formation->Create();
 	}
 }
 
+void EnterStageState::Update()
+{
+	Formation* formation = dynamic_cast<Formation*>(m_owner->GetScene()->GetEntityWithID("formation"));
+	formation->Update();
+
+	Ship* ship = new Ship(m_owner->GetScene(), "player");
+	ship->Create(Vector2D(400.0f, 500.0f));
+	m_owner->GetScene()->AddEntity(ship);
+
+	m_owner->SetState("game");
+}
+
+void EnterStageState::Exit()
+{
+	
+}
+
+void GameState::Enter()
+{
+	
+}	
+
 void GameState::Update()
 {
-
+	if (!m_owner->GetScene()->GetEntityWithID("player"))
+	{
+		Ship* ship = new Ship(m_owner->GetScene(), "player");
+		ship->Create(Vector2D(400.0f, 500.0f));
+		m_owner->GetScene()->AddEntity(ship);
+	}
 }
 
 void GameState::Exit()

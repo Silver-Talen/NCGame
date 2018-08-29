@@ -11,15 +11,15 @@
 #include "audioSystem.h"
 #include "eventManager.h"
 #include "animationComponent.h"
-
-std::vector<Vector2D> Enemy::m_enterPath = { Vector2D(200.0f, 400.0f), Vector2D(300.0f, 300.0f), Vector2D(200.0f, 200.0f), Vector2D(100.0f, 300.0f), Vector2D(200.0f, 400.0f) };
+#include "formation.h"
+#include "missile.h"
 
 void Enemy::Create(const Info& info)
 {
 	m_info = info;
 
 	SetTag("enemy");
-	m_transform.position = (m_info.side == LEFT) ? Vector2D(-64.0f, 400.0f) : Vector2D(864.0f, 400.0f);
+	m_transform.position = Vector2D::zero;
 	m_transform.scale = Vector2D(2.0f, 2.0f);
 
 	KinematicComponent* kinematic = AddComponent<KinematicComponent>();
@@ -27,9 +27,10 @@ void Enemy::Create(const Info& info)
 
 	AnimationComponent* animationComponent = AddComponent<AnimationComponent>();
 	std::vector<std::string> animations;
-	if (m_info.type == BEE) animations = { "enemy02A.png", "enemy02B.png" };
 	if (m_info.type == BOSS) animations = { "enemy01A.png", "enemy01B.png" };
-	animationComponent->Create(animations, 1.0f / 4.0f, AnimationComponent::ePlayback::LOOP);
+	if (m_info.type == BEE) animations = { "enemy02A.png", "enemy02B.png" };
+	if (m_info.type == BUG) animations = { "enemy03A.png", "enemy03B.png" };
+	animationComponent->Create(animations, 5.0f / 10.0f, AnimationComponent::ePlayback::LOOP);
 
 	SpriteComponent* spriteComponent = AddComponent<SpriteComponent>();
 	spriteComponent->Create("", Vector2D(0.5f, 0.5f));
@@ -72,11 +73,15 @@ void Enemy::OnEvent(const Event & event)
 
 			Explosion* explosion = m_scene->AddEntity<Explosion>();
 			explosion->Create(m_transform.position, Explosion::ENEMY);
+
 			SetState(Entity::DESTROY);
 		}
 		
 		if (event.sender->GetTag() == "player")
 		{
+			Explosion* explosion = m_scene->AddEntity<Explosion>();
+			explosion->Create(m_transform.position, Explosion::ENEMY);
+
 			SetState(Entity::DESTROY);
 		}
 	}
@@ -85,7 +90,7 @@ void Enemy::OnEvent(const Event & event)
 void EnterPathState::Enter()
 {
 	WaypointControllerComponent* waypointController = m_owner->GetEntity()->AddComponent<WaypointControllerComponent>();
-	waypointController->Create(Enemy::m_enterPath, m_owner->GetEntity<Enemy>()->m_info.speed);
+	waypointController->Create(m_owner->GetEntity<Enemy>()->m_info.formation->GetEnterPath(m_owner->GetEntity<Enemy>()->m_info.side), m_owner->GetEntity<Enemy>()->m_info.speed, 5.0f, true);
 }
 
 void EnterPathState::Update()
@@ -105,9 +110,7 @@ void EnterPathState::Exit()
 void EnterFormationState::Enter()
 {
 	WaypointControllerComponent* controller = m_owner->GetEntity()->AddComponent<WaypointControllerComponent>();
-	controller->Create(std::vector<Vector2D> { m_owner->GetEntity<Enemy>()->m_info.target }, m_owner->GetEntity<Enemy>()->m_info.speed);
-	//controller->Create(m_owner->GetEntity<Enemy>()->m_info.target, m_owner->GetEntity<Enemy>()->m_info.speed);
-
+	controller->Create(std::vector<Vector2D> { m_owner->GetEntity<Enemy>()->m_info.target }, m_owner->GetEntity<Enemy>()->m_info.speed, 5.0f);
 }
 
 void EnterFormationState::Update()
@@ -130,6 +133,11 @@ void IdleState::Enter()
 	controller->Create(m_owner->GetEntity<Enemy>()->m_info.target, 180.0f, m_owner->GetEntity<Enemy>()->m_info.speed, 5.0f);
 
 	m_timer = Math::GetRandomRange(m_timeMin, m_timeMax);
+	if (m_enter)
+	{
+		m_enter = false;
+		m_timer += 30.0f;
+	}
 }
 
 void IdleState::Update()
@@ -146,12 +154,13 @@ void IdleState::Update()
 
 void IdleState::Exit()
 {
+	
 }
 
 void AttackState::Enter()
 {
 	WaypointControllerComponent* waypointController = m_owner->GetEntity()->AddComponent<WaypointControllerComponent>();
-	waypointController->Create(Enemy::m_enterPath, m_owner->GetEntity<Enemy>()->m_info.speed);
+	waypointController->Create(m_owner->GetEntity<Enemy>()->m_info.formation->GetRandomAttackPath(), m_owner->GetEntity<Enemy>()->m_info.speed, 5.0f);
 }
 
 void AttackState::Update()
@@ -163,6 +172,16 @@ void AttackState::Update()
 		m_owner->GetEntity()->GetTransform().position.y = -64.0f;
 		m_owner->SetState("enter_formation");
 	}
+
+	std::vector<Entity*> missiles = m_owner->GetEntity<Enemy>()->GetScene()->GetEntitiesWithTag("enemyMissile");
+
+	/*if (missiles.size() < 2)
+	{
+		Missile* missile = new Missile(m_owner->GetEntity<Enemy>()->GetScene());
+		missile->Create("enemyMissile", m_owner->GetEntity<Enemy>()->GetTransform().position, Vector2D::up, 800.0f);
+		m_owner->GetEntity<Enemy>()->GetScene()->AddEntity(missile);
+		AudioSystem::Instance()->PlaySound("laser", false);
+	}*/
 }
 
 void AttackState::Exit()

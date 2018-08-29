@@ -26,6 +26,7 @@ bool Game::Initialize()
 	m_stateMachine = new StateMachine(m_scene);
 
 	m_stateMachine->AddState("title", new TitleState(m_stateMachine));
+	m_stateMachine->AddState("enter_stage", new EnterStageState(m_stateMachine));
 	m_stateMachine->AddState("game", new GameState(m_stateMachine));
 	m_stateMachine->SetState("title");
 	
@@ -35,10 +36,6 @@ bool Game::Initialize()
 	textComponent->Create("00000", "emulogic.ttf", 18, Color::white);
 	textComponent->SetDepth(100);
 	m_scene->AddEntity(entity);
-
-	Ship* ship = new Ship(m_scene, "player");
-	ship->Create(Vector2D(400.0f, 500.0f));
-	m_scene->AddEntity(ship);
 
 	m_running = success;
 
@@ -87,3 +84,5 @@ bool Game::Update()
 
 	return true;
 }
+
+//The End

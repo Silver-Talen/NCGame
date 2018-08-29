@@ -15,7 +15,7 @@ public:
 		bool isActive;
 	};
 public:
-	Formation(Scene* scene, ID& id) : Entity(scene, id) {}
+	Formation(Scene* scene, const ID& id) : Entity(scene, id) {}
 	virtual ~Formation() {}
 
 	void Create();
@@ -29,6 +29,6 @@ protected:
 	std::vector<Info> m_formation;
 	float m_timer = 0.0f;
 
-	Path m_enterPaths[2];
+	Path m_enterPaths[6];
 	std::vector<Path> m_attackPaths;
 };

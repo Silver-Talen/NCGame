@@ -11,13 +11,18 @@ public:
 	enum eType
 	{
 		BEE,
+		BUG,
 		BOSS
 	};
 
 	enum eSide
 	{
 		LEFT,
-		RIGHT
+		RIGHT,
+		TOPLEFT,
+		TOPRIGHT,
+		BOTTOMLEFT,
+		BOTTOMRIGHT
 	};
 
 	struct Info
@@ -37,8 +42,6 @@ public:
 	void Update();
 
 	void OnEvent(const Event& event);
-
-	static std::vector<Vector2D> m_enterPath;
 
 	Info m_info;
 
@@ -76,8 +79,9 @@ public:
 	void Exit();
 
 protected:
-	float m_timeMin = 2.0f;
-	float m_timeMax = 4.0f;
+	bool m_enter = true;
+	float m_timeMin = 8.0f;
+	float m_timeMax = 15.0f;
 	float m_timer = 0.0f;
 };
 
